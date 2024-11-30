@@ -12,7 +12,10 @@ const WhoWeAre = () => {
                     Who We Are
                 </h2>
                 <p className="text-xl text-white mt-4 max-w-3xl mx-auto leading-relaxed">
-                    ScrapYard is a community-driven car game and iRacing team. We race, we compete, and we thrive in a competitive environment, all while having fun with our friends and community!
+                    ScrapYard is a Discord community featuring a work-in-progress, unique car economy and management game bot, along with an iRacing simracing team. Our goal is to bring together communities through positive interactions and the power of simracing for good. We race, we thrive in a competitive environment, we battle, but most of all, we share the love with others, while learning to become better drivers along the way.
+                </p>
+                <p className="text-xl text-white mt-4 max-w-3xl mx-auto leading-relaxed">
+                    The ScrapYard Game is a work-in-progress game run through Discord. Pick a car from the scrapyard, repair it, customize it to fit its purpose, and bet against other players in races. ScrapYard has its own economy system and a wide selection of cars to choose from. Your dream car is just a few commands away.
                 </p>
             </div>
         </section>
