@@ -2,12 +2,12 @@ import React from 'react';
 
 const OurTeam = () => {
     const teamMembers = [
-        { name: 'weewoo', role: 'SY IR Team Lead', image: '../../weewoo_pfp.png' },
-        { name: 'Roy', role: 'Developer & Jr. Driver', image: '../../roy_pfp.png' },
-        { name: 'ben', role: 'Driver', image: '../../ben_pfp.png' },
-        { name: 'Jae', role:'Driver', image: '../../jae_pfp.png' },
-        { name: 'Mel', role:'Driver', image: '../../mel_pfp.png' },
-        { name: 'Subie', role:' Jr. Driver', image: '../../subie_pfp.png' },
+        { name: 'weewoo', role: 'SY IR Team Lead', image: '/public/weewoo_pfp.png' },
+        { name: 'Roy', role: 'Developer & Jr. Driver', image: '/public/roy_pfp.png' },
+        { name: 'ben', role: 'Driver', image: '/public/ben_pfp.png' },
+        { name: 'Jae', role:'Driver', image: '/public/jae_pfp.png' },
+        { name: 'Mel', role:'Driver', image: '/public/mel_pfp.png' },
+        { name: 'Subie', role:' Jr. Driver', image: '/public/subie_pfp.png' },
     ];
 
     return (
