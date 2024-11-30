@@ -7,10 +7,9 @@ const EventsPage = () => {
     const [countdown, setCountdown] = useState(null);
 
     useEffect(() => {
-        // Fetch events from the API
         const fetchEvents = async () => {
             try {
-                const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/event'); // Replace with your actual API URL
+                const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/event');
                 if (!response.ok) {
                     throw new Error('Failed to fetch events');
                 }
@@ -26,7 +25,6 @@ const EventsPage = () => {
         fetchEvents();
     }, []);
 
-    // Set up countdown timer
     useEffect(() => {
         if (!events.length) return;
 
@@ -37,11 +35,10 @@ const EventsPage = () => {
                 date_start: new Date(event.date_start).getTime(),
             }))
             .filter((event) => event.date_start > currentTime)
-            .sort((a, b) => a.date_start - b.date_start)[0]; // Get the closest event
+            .sort((a, b) => a.date_start - b.date_start)[0];
 
         if (!nextEvent) return;
 
-        // Update countdown every second
         const interval = setInterval(() => {
             const now = Date.now();
             const timeLeft = nextEvent.date_start - now;
@@ -59,7 +56,7 @@ const EventsPage = () => {
             }
         }, 1000);
 
-        return () => clearInterval(interval); // Cleanup interval on unmount
+        return () => clearInterval(interval);
     }, [events]);
 
     if (loading) {
@@ -70,26 +67,22 @@ const EventsPage = () => {
         return <div className="text-center py-10 text-red-500">{error}</div>;
     }
 
-    // Helper function to format date and time to local machine timezone
     const formatDateTime = (dateString) => {
-        const date = new Date(dateString); // Converts UTC to local timezone automatically
-        return date.toLocaleString(); // Formats the date and time in the user's local timezone
+        const date = new Date(dateString);
+        return date.toLocaleString();
     };
 
-    // Get current time
     const currentTime = Date.now();
 
-    // Filter upcoming events
     const upcomingEvents = events.filter((event) => {
         const eventStartTime = new Date(event.date_start).getTime();
-        return eventStartTime >= currentTime; // Keep future events
+        return eventStartTime >= currentTime;
     });
 
-    // Filter live events (events that are ongoing)
     const liveEvents = events.filter((event) => {
         const eventStartTime = new Date(event.date_start).getTime();
         const eventEndTime = new Date(event.date_end).getTime();
-        return eventStartTime <= currentTime && eventEndTime >= currentTime; // Keep ongoing events
+        return eventStartTime <= currentTime && eventEndTime >= currentTime;
     });
 
     return (
@@ -173,7 +166,6 @@ const EventsPage = () => {
                         })}
                     </div>
                 ) : (
-                    // If no upcoming events, show this message
                     <div className="bg-black bg-opacity-60 text-white p-6 rounded-lg shadow-lg flex justify-center items-center h-56">
                         <div className="text-center">
                             <p className="text-2xl font-semibold text-red-500">No upcoming events planned</p>

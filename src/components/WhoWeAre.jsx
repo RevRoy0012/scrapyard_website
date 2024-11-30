@@ -4,7 +4,7 @@ const WhoWeAre = () => {
     return (
         <section
             className="py-16 px-8 text-center bg-cover bg-center relative"
-            style={{ backgroundImage: 'url(/small.png)' }} // Add your image here
+            style={{ backgroundImage: 'url(/small.png)' }}
         >
             <div className="absolute inset-0 bg-black opacity-50"></div> {/* Overlay for better text visibility */}
             <div className="relative z-10">

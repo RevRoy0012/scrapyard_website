@@ -40,8 +40,8 @@ const BlogPostComponent = () => {
             key={post.id}
             className="bg-white bg-opacity-80 p-6 rounded-lg shadow-lg transform transition duration-300 ease-in-out"
             style={{
-                width: "100%", // Ensures the card spans the available space
-                overflowWrap: "break-word", // Prevents content overflow
+                width: "100%",
+                overflowWrap: "break-word",
             }}
         >
             {/* User info */}
@@ -58,7 +58,7 @@ const BlogPostComponent = () => {
             <div
                 className="mb-4 text-gray-700 prose prose-red max-w-none"
                 style={{
-                    whiteSpace: "pre-wrap", // Handles newlines and wraps text naturally
+                    whiteSpace: "pre-wrap",
                 }}
             >
                 <ReactMarkdown
