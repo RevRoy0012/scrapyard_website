@@ -1,4 +1,5 @@
 import React from 'react';
+import 'animate.css';
 import HeroSection from './components/HeroSection';
 import WhoWeAre from './components/WhoWeAre';
 import OurTeam from './components/OurTeam';
