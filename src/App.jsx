@@ -3,7 +3,6 @@ import HeroSection from './components/HeroSection';
 import WhoWeAre from './components/WhoWeAre';
 import OurTeam from './components/OurTeam';
 import SocialLinks from './components/SocialLinks';
-import Footer from './components/Footer';
 
 function App() {
     return (
@@ -12,7 +11,6 @@ function App() {
             <WhoWeAre />
             <OurTeam />
             <SocialLinks />
-            <Footer />
         </div>
     );
 }

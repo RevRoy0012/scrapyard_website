@@ -2,9 +2,9 @@ import React from 'react';
 
 const OurTeam = () => {
     const teamMembers = [
-        { name: 'weewoo', role: 'SY IR Team Lead', image: '/weewoo_pfp.png' },
+        { name: 'Jordan', role: 'SY IR Team Lead', image: '/weewoo_pfp.png' },
         { name: 'Roy', role: 'Developer & Jr. Driver', image: '/roy_pfp.png' },
-        { name: 'ben', role: 'Driver', image: '/ben_pfp.png' },
+        { name: 'Ben', role: 'Driver', image: '/ben_pfp.png' },
         { name: 'Jae', role:'Driver', image: '/jae_pfp.png' },
         { name: 'Mel', role:'Driver', image: '/mel_pfp.png' },
         { name: 'Subie', role:' Jr. Driver', image: '/subie_pfp.png' },
