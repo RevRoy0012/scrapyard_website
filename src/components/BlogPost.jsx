@@ -90,7 +90,7 @@ const BlogPostComponent = () => {
     return (
         <div
             className="min-h-screen py-12 bg-cover bg-center"
-            style={{ backgroundImage: "url('/path-to-your-background.jpg')" }}
+            style={{ backgroundImage: "url('/good.png')" }}
         >
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-4xl font-extrabold text-center text-red-500 mb-10">Blog Posts</h1>
