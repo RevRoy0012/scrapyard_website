@@ -1,3 +1,77 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.blog-post-content {
+    line-height: 1.6; /* Ensures proper line spacing */
+    font-size: 1rem; /* Adjust font size */
+    color: #e0e0e0; /* Light text color for readability */
+    max-width: 800px; /* Max width for content */
+    margin: 0 auto; /* Center content */
+}
+
+.blog-post-content p {
+    margin-bottom: 1em; /* Adds space between paragraphs */
+}
+
+.blog-post-content a {
+    color: #ff4747; /* Red link color (matching ScrapYard's red theme) */
+    text-decoration: none;
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.blog-post-content a:hover {
+    color: #ff5c5c; /* Slightly lighter red on hover */
+    text-decoration: underline;
+}
+
+.blog-post-content code {
+    background-color: #2d2d2d; /* Dark background for code blocks */
+    color: #f1f1f1; /* Light text for code */
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.blog-post-content pre {
+    background-color: #1e1e1e; /* Dark background for preformatted code */
+    color: #f1f1f1;
+    padding: 16px;
+    border-radius: 4px;
+    overflow-x: auto; /* Ensure large code blocks are scrollable */
+    white-space: pre-wrap; /* Allow long lines to wrap */
+}
+
+.blog-post-content h1,
+.blog-post-content h2,
+.blog-post-content h3 {
+    color: #ff4747; /* Red color for headers to match the theme */
+    font-weight: bold;
+}
+
+.blog-post-content h1 {
+    font-size: 2rem; /* Larger font size for main heading */
+    margin-bottom: 0.8em;
+}
+
+.blog-post-content h2 {
+    font-size: 1.5rem; /* Slightly smaller for subheadings */
+    margin-bottom: 0.6em;
+}
+
+.blog-post-content h3 {
+    font-size: 1.2rem; /* Even smaller for sub-subheadings */
+    margin-bottom: 0.4em;
+}
+
+.blog-post-content {
+    max-width: 100%;
+    padding: 1rem;
+}
+
+@media (min-width: 640px) {
+    .blog-post-content {
+        max-width: 800px; /* Ensures content doesn't stretch too wide on larger screens */
+        margin: 0 auto;
+    }
+}

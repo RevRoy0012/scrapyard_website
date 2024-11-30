@@ -3,6 +3,8 @@ import 'animate.css';
 import HeroSection from './components/HeroSection';
 import WhoWeAre from './components/WhoWeAre';
 import OurTeam from './components/OurTeam';
+import EventsPage from './components/EventsPage';
+import BlogPost from './components/BlogPost';
 
 function App() {
     return (
@@ -10,6 +12,8 @@ function App() {
             <HeroSection />
             <WhoWeAre />
             <OurTeam />
+            <EventsPage/>
+            <BlogPost/>
         </div>
     );
 }
