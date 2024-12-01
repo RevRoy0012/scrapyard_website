@@ -4,10 +4,10 @@ const OurTeam = () => {
     const teamMembers = [
         { name: 'Jordan', role: 'Team Lead', image: '/weewoo_pfp.png' },
         { name: 'Roy', role: 'Developer', image: '/roy_pfp.png' },
-        { name: 'Ben', role: 'Driver', image: '/ben_pfp.png' },
-        { name: 'Jae', role: 'Driver', image: '/jae_pfp.png' },
-        { name: 'Mel', role: 'Driver', image: '/mel_pfp.png' },
-        { name: 'Subie', role: 'Jr. Driver', image: '/subie_pfp.png' },
+        { name: 'Aaron', role: 'Driver', image: '/ben_pfp.png' },
+        { name: 'Nathan', role: 'Driver', image: '/jae_pfp.png' },
+        { name: 'Malvyn', role: 'Driver', image: '/mel_pfp.png' },
+        { name: 'Michael', role: 'Jr. Driver', image: '/subie_pfp.png' },
     ];
 
     return (
