@@ -52,7 +52,14 @@ const EventsPage = () => {
                 const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-                setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+                // Build countdown string, omitting parts that are 0
+                let countdownString = '';
+                if (days > 0) countdownString += `${days}d `;
+                if (hours > 0) countdownString += `${hours}h `;
+                if (minutes > 0) countdownString += `${minutes}m `;
+                countdownString += `${seconds}s`;
+
+                setCountdown(countdownString);
             }
         }, 1000);
 
