@@ -15,6 +15,7 @@ const OAuthCallback = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         const error = urlParams.get('error');
+        const codeVerifier = urlParams.get('code_verifier');
 
         addLog(`OAuth callback received: code=${code}, error=${error}`);
 
@@ -35,18 +36,16 @@ const OAuthCallback = () => {
         if (code) {
             addLog(`Received code: ${code}`);
 
-            // Retrieve code_verifier from localStorage
-            const codeVerifier = localStorage.getItem("code_verifier");
+            // If code_verifier isn't in URL, we can't proceed.
             if (!codeVerifier) {
-                addLog("No code_verifier found in localStorage. Cannot proceed.");
+                addLog("No code_verifier found in URL. Cannot proceed.");
                 alert("Missing code_verifier. Please try logging in again.");
                 return;
             }
 
-            // Send the code and code_verifier to the backend
+            addLog("Sending code and code_verifier to API Gateway...");
             const handleAuth = async () => {
                 try {
-                    addLog("Sending code and code_verifier to API Gateway...");
                     const response = await fetch(
                         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/discord-oauth',
                         {
