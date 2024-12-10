@@ -8,6 +8,7 @@ const OAuthCallback = () => {
     // Function to add logs
     const addLog = (message) => {
         setLogs((prevLogs) => [...prevLogs, message]);
+        console.log(message);
     };
 
     useEffect(() => {
@@ -17,6 +18,7 @@ const OAuthCallback = () => {
 
         addLog(`OAuth callback received: code=${code}, error=${error}`);
 
+        // If no code or error, redirect to home
         if (!code && !error) {
             addLog("No code or error in URL parameters, redirecting to home...");
             navigate('/');
@@ -33,10 +35,18 @@ const OAuthCallback = () => {
         if (code) {
             addLog(`Received code: ${code}`);
 
-            // Send the code to the API Gateway endpoint
+            // Retrieve code_verifier from localStorage
+            const codeVerifier = localStorage.getItem("code_verifier");
+            if (!codeVerifier) {
+                addLog("No code_verifier found in localStorage. Cannot proceed.");
+                alert("Missing code_verifier. Please try logging in again.");
+                return;
+            }
+
+            // Send the code and code_verifier to the backend
             const handleAuth = async () => {
                 try {
-                    addLog("Sending code to API Gateway...");
+                    addLog("Sending code and code_verifier to API Gateway...");
                     const response = await fetch(
                         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/discord-oauth',
                         {
@@ -44,7 +54,7 @@ const OAuthCallback = () => {
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({ code }),
+                            body: JSON.stringify({ code, code_verifier: codeVerifier }),
                         }
                     );
 
@@ -61,8 +71,10 @@ const OAuthCallback = () => {
                     const data = await response.json();
                     addLog(`API Gateway response data: ${JSON.stringify(data)}`);
 
-                    if (data.message === 'User successfully authenticated and stored') {
+                    // Check response message and redirect accordingly
+                    if (data.message === 'User authenticated successfully') {
                         addLog("Authentication successful, redirecting to app...");
+                        // Redirect to your mobile app URI scheme or wherever you need
                         window.location.href = `scrapyardapp://auth?message=${data.message}`;
                     } else {
                         addLog(`Authentication failed: ${JSON.stringify(data)}`);
