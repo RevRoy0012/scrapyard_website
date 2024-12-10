@@ -44,18 +44,18 @@ const OAuthCallback = () => {
                     console.log("API Gateway response status:", response.status);
 
                     if (!response.ok) {
-                        console.error("Failed API response:", response.status, await response.text());
-                        alert("Authentication failed.");
+                        const errorText = await response.text();
+                        console.error("Failed API response:", response.status, errorText);
+                        alert("Authentication failed. Please try again.");
                         return;
                     }
 
                     const data = await response.json();
                     console.log("API Gateway response data:", data);
 
-                    if (data.token) {
+                    if (data.message === 'User successfully authenticated and stored') {
                         console.log("Authentication successful, redirecting to app...");
-                        // Redirect to your app's deep link (optional)
-                        window.location.href = `syapp://auth?token=${data.token}`;
+                        window.location.href = `syapp://auth?message=${data.message}`;
                     } else {
                         console.error("Authentication failed:", data);
                         alert("Authentication failed.");
