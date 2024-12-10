@@ -23,7 +23,7 @@ const OAuthCallback = () => {
             const handleAuth = async () => {
                 try {
                     const response = await fetch(
-                        'https://<your-api-gateway-endpoint>/discord-oauth',
+                        'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/discord-oauth',
                         {
                             method: 'POST',
                             headers: {
