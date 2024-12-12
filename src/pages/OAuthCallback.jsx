@@ -8,9 +8,6 @@ const OAuthCallback = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
         const error = urlParams.get("error");
-        const codeVerifier = sessionStorage.getItem("code_verifier");
-
-        console.log("OAuth callback received:", { code, error });
 
         if (!code && !error) {
             navigate("/");
@@ -18,13 +15,13 @@ const OAuthCallback = () => {
         }
 
         if (error) {
-            console.error("OAuth Error:", error);
             alert("Something went wrong with Discord login.");
             return;
         }
 
-        if (code && codeVerifier) {
+        if (code) {
             const handleAuth = async () => {
+                const codeVerifier = localStorage.getItem("pkce_verifier");
                 try {
                     const response = await fetch(
                         "https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/discord-oauth",
@@ -38,11 +35,10 @@ const OAuthCallback = () => {
                     );
 
                     const data = await response.json();
-                    if (response.ok) {
-                        console.log("Authentication successful:", data);
+                    if (data.message === "User authenticated successfully") {
+                        console.log("Authentication successful");
                         window.location.href = `scrapyardapp://auth?message=${data.message}`;
                     } else {
-                        console.error("Authentication failed:", data);
                         alert("Authentication failed.");
                     }
                 } catch (err) {
@@ -52,9 +48,6 @@ const OAuthCallback = () => {
             };
 
             handleAuth();
-        } else {
-            console.error("Missing code verifier or authorization code.");
-            alert("Invalid session or missing parameters.");
         }
     }, [navigate]);
 
