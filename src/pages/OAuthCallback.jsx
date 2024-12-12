@@ -8,6 +8,7 @@ const OAuthCallback = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
         const error = urlParams.get("error");
+        const codeVerifier = sessionStorage.getItem("code_verifier");
 
         console.log("OAuth callback received:", { code, error });
 
@@ -22,7 +23,7 @@ const OAuthCallback = () => {
             return;
         }
 
-        if (code) {
+        if (code && codeVerifier) {
             const handleAuth = async () => {
                 try {
                     const response = await fetch(
@@ -32,13 +33,13 @@ const OAuthCallback = () => {
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({ code }),
+                            body: JSON.stringify({ code, codeVerifier }),
                         }
                     );
 
                     const data = await response.json();
-                    if (data.message === "User authenticated successfully") {
-                        console.log("Authentication successful");
+                    if (response.ok) {
+                        console.log("Authentication successful:", data);
                         window.location.href = `scrapyardapp://auth?message=${data.message}`;
                     } else {
                         console.error("Authentication failed:", data);
@@ -51,6 +52,9 @@ const OAuthCallback = () => {
             };
 
             handleAuth();
+        } else {
+            console.error("Missing code verifier or authorization code.");
+            alert("Invalid session or missing parameters.");
         }
     }, [navigate]);
 
