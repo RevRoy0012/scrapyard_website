@@ -3,7 +3,6 @@ import React from 'react';
 const OurTeam = () => {
     const teamMembers = [
         { name: 'Jordan', role: 'Team Lead', image: '/weewoo_pfp.png' },
-        { name: 'Roy', role: 'Developer', image: '/roy_pfp.png' },
         { name: 'Aaron', role: 'Driver', image: '/ben_pfp.png' },
         { name: 'Nathan', role: 'Driver', image: '/jae_pfp.png' },
         { name: 'Malvyn', role: 'Driver', image: '/mel_pfp.png' },
