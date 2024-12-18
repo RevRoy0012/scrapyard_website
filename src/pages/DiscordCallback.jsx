@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-// Hard-coded endpoint for discord-link
 const DISCORD_LINK_URL = "https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link";
 
 export default function DiscordCallback() {
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
     const jwt = sessionStorage.getItem('sy_jwt');
 
     useEffect(() => {
@@ -17,13 +16,13 @@ export default function DiscordCallback() {
 
         if (!jwt) {
             alert("You're not logged in. Please log in first.");
-            history.push('/');
+            navigate('/');
             return;
         }
 
         if (!code || !state || state !== storedState) {
             alert("Invalid Discord authorization.");
-            history.push('/link-discord');
+            navigate('/link-discord');
             return;
         }
 
@@ -37,14 +36,13 @@ export default function DiscordCallback() {
             const result = await response.json();
             if (response.ok) {
                 alert('Discord account linked successfully!');
-                // Navigate to main-app or another page of your choice
-                history.push('/main-app');
+                navigate('/main-app');
             } else {
                 alert(result.message || "Failed to link Discord account.");
-                history.push('/link-discord');
+                navigate('/link-discord');
             }
         })();
-    }, [location, history, jwt]);
+    }, [location, navigate, jwt]);
 
     return <p style={{ color: '#fff' }}>Linking your Discord account, please wait...</p>;
 }
