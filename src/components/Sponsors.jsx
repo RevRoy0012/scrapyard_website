@@ -14,6 +14,8 @@ const sponsors = [
     },
 ];
 
+const scrapyardLogo = 'https://scrapyard.gg/sy_logo.png';
+
 // Styles as JavaScript Objects
 const styles = {
     sponsorsSection: {
@@ -76,9 +78,14 @@ const styles = {
         maxWidth: '400px',
         width: '90%',
     },
+    popupLogo: {
+        maxWidth: '100px',
+        margin: '0 auto 20px',
+    },
     popupMessage: {
         fontSize: '1em',
         marginBottom: '20px',
+        lineHeight: '1.5',
     },
     popupButton: {
         backgroundColor: '#e10600',
@@ -145,15 +152,21 @@ const Sponsors = () => {
             {popupVisible && (
                 <div style={styles.popupOverlay}>
                     <div style={styles.popupContainer}>
+                        <img
+                            src={scrapyardLogo}
+                            alt="ScrapYard Logo"
+                            style={styles.popupLogo}
+                        />
                         <p style={styles.popupMessage}>
-                            You're about to leave our site and go to an external site.
-                            Please note we are not associated with this site and its contents.
+                            You’re about to leave ScrapYard and visit an external site.
+                            Please note that ScrapYard is not responsible for the content,
+                            policies, or security of the external website.
                         </p>
                         <button
                             style={styles.popupButton}
                             onClick={handleContinue}
                         >
-                            Continue to site
+                            Continue to External Site
                         </button>
                         <button
                             style={styles.popupButton}
