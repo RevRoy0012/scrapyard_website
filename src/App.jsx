@@ -8,6 +8,7 @@ import OurTeam from './components/OurTeam';
 import EventsPage from './components/EventsPage';
 import BlogPost from './components/BlogPost';
 import Video from './components/Video';
+import Sponsors from './components/Sponsors.jsx';
 
 import Login from './pages/Login';
 import LinkDiscord from './pages/LinkDiscord';
@@ -43,6 +44,7 @@ function App() {
                             <EventsPage />
                             <BlogPost />
                             <Video />
+                            <Sponsors />
                         </div>
                     }
                 />

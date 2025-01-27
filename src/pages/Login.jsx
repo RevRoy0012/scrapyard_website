@@ -32,14 +32,14 @@ export default function Login({ onLoginSuccess }) {
                 placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                style={{ marginBottom: '10px', padding: '8px' }}
+                style={{ marginBottom: '10px', padding: '8px', color: '#ff0000' }}
             />
             <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                style={{ marginBottom: '10px', padding: '8px' }}
+                style={{ marginBottom: '10px', padding: '8px', color: '#ff0000'}}
             />
             <button onClick={handleLogin} style={{ padding: '10px', background: '#ff0000', color: '#fff', border: 'none', borderRadius: '5px' }}>
                 Log In
