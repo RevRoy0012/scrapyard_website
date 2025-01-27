@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 const sponsors = [
     {
         name: 'nixianearts',
-        logo: 'https://scrapyard.gg/nixanearts.png',
+        logo: 'https://scrapyard.gg/nixianearts.png',
         website: 'https://www.instagram.com/nixianearts/',
     },
     {
