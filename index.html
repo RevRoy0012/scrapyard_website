@@ -14,6 +14,51 @@
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-P3XB5MNW');</script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const consentBanner = document.getElementById("cookie-consent-banner");
+        const acceptButton = document.getElementById("accept-cookies");
+        const rejectButton = document.getElementById("reject-cookies");
+
+        // Check if consent has already been given
+        if (!localStorage.getItem("analytics_consent")) {
+          consentBanner.style.display = "block";
+        }
+
+        // Handle Accept
+        acceptButton.addEventListener("click", function () {
+          localStorage.setItem("analytics_consent", "true");
+          consentBanner.style.display = "none";
+          loadGoogleAnalytics();
+        });
+
+        // Handle Reject
+        rejectButton.addEventListener("click", function () {
+          localStorage.setItem("analytics_consent", "false");
+          consentBanner.style.display = "none";
+        });
+
+        // Function to load Google Analytics
+        function loadGoogleAnalytics() {
+          let script = document.createElement("script");
+          script.async = true;
+          script.src = "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX";
+          document.head.appendChild(script);
+
+          script.onload = function () {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-PLG207CE58');
+          };
+        }
+
+        // Load analytics if consent was previously given
+        if (localStorage.getItem("analytics_consent") === "true") {
+          loadGoogleAnalytics();
+        }
+      });
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png+xml" href="/sy_logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,6 +71,11 @@
     <title>ScrapYard</title>
   </head>
   <body>
+  <div id="cookie-consent-banner" style="display:none; position:fixed; bottom:10px; left:10px; background:#000; color:#fff; padding:15px; border-radius:5px; z-index:1000;">
+    <p>This website uses cookies to enhance your experience. <a href="/privacy-policy">Learn more</a></p>
+    <button id="accept-cookies">Accept</button>
+    <button id="reject-cookies">Reject</button>
+  </div>
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P3XB5MNW"
                     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="root"></div>
