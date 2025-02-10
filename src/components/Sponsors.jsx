@@ -12,6 +12,11 @@ const sponsors = [
         logo: 'https://scrapyard.gg/twitch.channel.png',
         website: 'https://m.twitch.tv/kiddsiscotv/home',
     },
+    {
+        name: 'Maple Designs',
+        logo: 'https://scrapyard.gg/maple.png',
+        website: 'https://www.instagram.com/maplesgfxshed?igsh=OWN3Z2NyajJqMDd0',
+    },
 ];
 
 const scrapyardLogo = 'https://scrapyard.gg/sy_logo.png';
