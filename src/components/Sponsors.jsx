@@ -38,6 +38,7 @@ const styles = {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
+        alignItems: 'flex-start', // Ensures independent height
         gap: '30px',
     },
     sponsorCard: {
@@ -57,6 +58,7 @@ const styles = {
         maxWidth: '100%',
         height: 'auto',
         marginBottom: '15px',
+        objectFit: 'contain', // Ensures the image scales nicely
     },
     sponsorName: {
         fontSize: '1.2em',
