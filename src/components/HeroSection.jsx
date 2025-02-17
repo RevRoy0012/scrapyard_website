@@ -1,12 +1,14 @@
 // src/components/HeroSection.jsx
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
     const [scrolling, setScrolling] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null); // Expected to have at least { profilePicture }
     const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleScroll = () => {
         setScrolling(window.scrollY > 10);
@@ -19,15 +21,18 @@ const HeroSection = () => {
         if (storedUser) {
             setUser(JSON.parse(storedUser));
             setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
         }
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('user');
+        localStorage.removeItem('user');  // Clear local storage
         setUser(null);
         setIsAuthenticated(false);
         setDropdownOpen(false);
+        navigate('/login');  // Navigate to the login page
     };
 
     const toggleDropdown = () => {
@@ -57,7 +62,7 @@ const HeroSection = () => {
                         </Link>
                         <Link
                             to="/signup"
-                            className="bg-transparent text-white px-6 py-3 rounded-full "
+                            className="bg-transparent text-white px-6 py-3 rounded-full"
                         >
                             Sign up
                         </Link>

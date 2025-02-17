@@ -30,10 +30,10 @@ const LinkDiscord = () => {
         );
     }
 
-    // Construct the Discord OAuth URL without a state parameter
     const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
-    )}&scope=identify+email`;
+    )}&scope=identify+email&state=${encodeURIComponent(user.email)}`;
+
 
     const handleLinkDiscord = () => {
         window.location.href = discordOAuthUrl;
