@@ -1,4 +1,4 @@
-// In your LinkDiscord.jsx
+// src/pages/LinkDiscord.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,7 +7,10 @@ const LinkDiscord = () => {
     const user = storedUser ? JSON.parse(storedUser) : null;
     const navigate = useNavigate();
 
-    if (!user || !user.email) {
+    // Check for an email property. Use either 'email' or 'user_email'
+    const userEmail = user ? (user.email || user.user_email) : null;
+
+    if (!user || !userEmail) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
                 <p className="text-white mb-4">
@@ -23,10 +26,10 @@ const LinkDiscord = () => {
         );
     }
 
-    // Pass the SY email as the state parameter.
+    // Build the Discord OAuth URL using the SY account email from localStorage
     const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
-    )}&scope=identify+email&state=${encodeURIComponent(user.email)}`;
+    )}&scope=identify+email&state=${encodeURIComponent(userEmail)}`;
 
     const handleLinkDiscord = () => {
         window.location.href = discordOAuthUrl;
