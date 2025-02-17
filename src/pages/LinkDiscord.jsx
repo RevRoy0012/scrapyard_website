@@ -1,20 +1,13 @@
-// src/pages/LinkDiscord.jsx
-import React, { useEffect } from 'react';
+// In your LinkDiscord.jsx
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LinkDiscord = () => {
-    const navigate = useNavigate();
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
+    const navigate = useNavigate();
 
-    // If the user is already linked, redirect them to the profile page.
-    useEffect(() => {
-        if (user && user.discord_id) {
-            navigate('/profile');
-        }
-    }, [user, navigate]);
-
-    if (!user) {
+    if (!user || !user.email) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
                 <p className="text-white mb-4">
@@ -30,10 +23,10 @@ const LinkDiscord = () => {
         );
     }
 
+    // Pass the SY email as the state parameter.
     const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
     )}&scope=identify+email&state=${encodeURIComponent(user.email)}`;
-
 
     const handleLinkDiscord = () => {
         window.location.href = discordOAuthUrl;
