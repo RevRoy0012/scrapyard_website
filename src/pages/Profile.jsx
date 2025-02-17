@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Profile = () => {
+const Profile = ({ onLogout }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
 
@@ -23,6 +23,12 @@ const Profile = () => {
         );
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        if (onLogout) onLogout();
+        navigate('/login');
+    };
+
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center">
             <h2 className="text-3xl font-bold mb-4">Your Profile</h2>
@@ -34,10 +40,7 @@ const Profile = () => {
             <p className="text-lg mb-2">Email: {user.email}</p>
             <p className="text-lg mb-2">Username: {user.username || 'N/A'}</p>
             <button
-                onClick={() => {
-                    localStorage.removeItem('user');
-                    navigate('/login');
-                }}
+                onClick={handleLogout}
                 className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
             >
                 Logout

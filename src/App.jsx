@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import 'animate.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
-// Dummy components – replace with your actual components
 import HeroSection from './components/HeroSection';
 import WhoWeAre from './components/WhoWeAre';
 import OurTeam from './components/OurTeam';
@@ -12,29 +11,31 @@ import BlogPost from './components/BlogPost';
 import Video from './components/Video';
 import Sponsors from './components/Sponsors';
 
-// Pages
-import Profile from './pages/Profile';
-import Login from './pages/SignIn.jsx';
+import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import LinkDiscord from './pages/LinkDiscord';
 import DiscordCallback from './pages/DiscordCallback';
+import Profile from './pages/Profile';
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
-        // Scroll slightly to trigger any animations
         window.scrollTo(0, 1);
-
-        // Auto-login if user info exists in localStorage
         const user = localStorage.getItem('user');
         if (user) {
             setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
         }
     }, []);
 
     const handleLoginSuccess = () => {
         setLoggedIn(true);
+    };
+
+    const handleLogout = () => {
+        setLoggedIn(false);
     };
 
     return (
@@ -83,16 +84,14 @@ function App() {
                 {/* OAuth Callback Route from Discord */}
                 <Route path="/oauth2/callback" element={<DiscordCallback />} />
 
-                {/* Handle unknown routes */}
-                <Route
-                    path="*"
-                    element={<div style={{ color: '#fff', padding: '20px' }}>Page Not Found</div>}
-                />
-
+                {/* Profile Page Route */}
                 <Route
                     path="/profile"
-                    element={loggedIn ? <Profile /> : <Navigate to="/login" replace />}
+                    element={loggedIn ? <Profile onLogout={handleLogout} /> : <Navigate to="/login" replace />}
                 />
+
+                {/* Handle unknown routes */}
+                <Route path="*" element={<div style={{ color: '#fff', padding: '20px' }}>Page Not Found</div>} />
             </Routes>
         </Router>
     );
