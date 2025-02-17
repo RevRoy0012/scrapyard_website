@@ -1,16 +1,20 @@
+// src/App.js
 import React, { useEffect, useState } from 'react';
 import 'animate.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
+// Dummy components – replace with your actual components
 import HeroSection from './components/HeroSection';
 import WhoWeAre from './components/WhoWeAre';
 import OurTeam from './components/OurTeam';
 import EventsPage from './components/EventsPage';
 import BlogPost from './components/BlogPost';
 import Video from './components/Video';
-import Sponsors from './components/Sponsors.jsx';
+import Sponsors from './components/Sponsors';
 
-import Login from './pages/Login';
+// Pages
+import Login from './pages/SignIn.jsx';
+import SignUp from './pages/SignUp';
 import LinkDiscord from './pages/LinkDiscord';
 import DiscordCallback from './pages/DiscordCallback';
 
@@ -21,9 +25,11 @@ function App() {
         // Scroll slightly to trigger any animations
         window.scrollTo(0, 1);
 
-        // Check for JWT in sessionStorage
-        const token = sessionStorage.getItem('sy_jwt');
-        setLoggedIn(!!token);
+        // Auto-login if user info exists in localStorage
+        const user = localStorage.getItem('user');
+        if (user) {
+            setLoggedIn(true);
+        }
     }, []);
 
     const handleLoginSuccess = () => {
@@ -61,28 +67,20 @@ function App() {
                     }
                 />
 
+                {/* Sign Up Page Route */}
+                <Route
+                    path="/signup"
+                    element={loggedIn ? <Navigate to="/link-discord" replace /> : <SignUp />}
+                />
+
                 {/* Link Discord Page Route - requires login */}
                 <Route
                     path="/link-discord"
-                    element={
-                        loggedIn ? (
-                            <LinkDiscord />
-                        ) : (
-                            <Navigate to="/login" replace />
-                        )
-                    }
+                    element={loggedIn ? <LinkDiscord /> : <Navigate to="/login" replace />}
                 />
 
                 {/* OAuth Callback Route from Discord */}
-                <Route
-                    path="/oauth2/callback"
-                    element={<DiscordCallback />}
-                />
-
-                {/* Add any additional routes or a main-app route here */}
-                {/* Example:
-                <Route path="/main-app" element={loggedIn ? <MainApp /> : <Navigate to="/login" />} />
-                */}
+                <Route path="/oauth2/callback" element={<DiscordCallback />} />
 
                 {/* Handle unknown routes */}
                 <Route

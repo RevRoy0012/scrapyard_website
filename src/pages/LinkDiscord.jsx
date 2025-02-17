@@ -1,31 +1,51 @@
+// src/pages/LinkDiscord.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// Hard-coded Discord client ID and front-end URL
-const DISCORD_CLIENT_ID = "1312377564005666879";
-const FRONTEND_URL = "";
+const LinkDiscord = () => {
+    // Retrieve the current user from localStorage (or your auth context)
+    const storedUser = localStorage.getItem('user');
+    const user = storedUser ? JSON.parse(storedUser) : null;
+    const navigate = useNavigate();
 
-export default function LinkDiscord() {
-    const jwt = sessionStorage.getItem('sy_jwt');
-    if (!jwt) {
-        return <p style={{ color: '#fff' }}>You must be logged in.</p>;
+    if (!user) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
+                <p className="text-white mb-4">You must be signed in to link your Discord account.</p>
+                <button
+                    className="bg-red-500 hover:bg-red-600 text-white p-3 rounded"
+                    onClick={() => navigate('/login')}
+                >
+                    Go to Sign In
+                </button>
+            </div>
+        );
     }
 
-    const handleLinkDiscord = () => {
-        const redirectUri = encodeURIComponent(`${FRONTEND_URL}/oauth2/callback`);
-        const state = Math.random().toString(36).substring(2);
-        sessionStorage.setItem('discord_oauth_state', state);
+    // Construct the Discord OAuth URL.
+    // The "state" parameter here is used to pass the user's email.
+    const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
+        'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
+    )}&scope=identify%20email%20guilds.join&state=${encodeURIComponent(user.email)}`;
 
-        const discordAuthURL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=identify&state=${state}`;
-        window.location.href = discordAuthURL;
+    const handleLinkDiscord = () => {
+        window.location.href = discordOAuthUrl;
     };
 
     return (
-        <div style={{ color: '#fff', textAlign: 'center', marginTop: '50px' }}>
-            <h1>Link Your Discord Account</h1>
-            <p>Click below to link your Discord account.</p>
-            <button onClick={handleLinkDiscord} style={{ padding: '10px', background: '#5865F2', color: '#fff', border: 'none', borderRadius: '5px' }}>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
+            <h2 className="text-2xl text-white mb-6">Link Your Discord Account</h2>
+            <p className="text-gray-300 mb-4">
+                Linking your Discord account will provide you with a unified experience on ScrapYard.
+            </p>
+            <button
+                onClick={handleLinkDiscord}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded"
+            >
                 Link Discord
             </button>
         </div>
     );
-}
+};
+
+export default LinkDiscord;

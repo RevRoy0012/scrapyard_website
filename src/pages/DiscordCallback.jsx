@@ -1,48 +1,31 @@
+// src/pages/DiscordCallback.jsx
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const DISCORD_LINK_URL = "https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link";
-
-export default function DiscordCallback() {
+const DiscordCallback = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const jwt = sessionStorage.getItem('sy_jwt');
 
     useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const code = params.get('code');
-        const state = params.get('state');
-        const storedState = sessionStorage.getItem('discord_oauth_state');
+        // Optionally, parse query parameters if needed:
+        const query = new URLSearchParams(location.search);
+        // You could use any parameter (like a "success" flag) here.
 
-        if (!jwt) {
-            alert("You're not logged in. Please log in first.");
-            navigate('/');
-            return;
-        }
-
-        if (!code || !state || state !== storedState) {
-            alert("Invalid Discord authorization.");
+        // Redirect after a short delay (if needed)
+        const timer = setTimeout(() => {
             navigate('/link-discord');
-            return;
-        }
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [location, navigate]);
 
-        (async () => {
-            const response = await fetch(DISCORD_LINK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
-                body: JSON.stringify({ code })
-            });
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-900">
+            <div className="text-white text-center">
+                <h2>Linking Discord Account...</h2>
+                <p>Please wait, you will be redirected shortly.</p>
+            </div>
+        </div>
+    );
+};
 
-            const result = await response.json();
-            if (response.ok) {
-                alert('Discord account linked successfully!');
-                navigate('/main-app');
-            } else {
-                alert(result.message || "Failed to link Discord account.");
-                navigate('/link-discord');
-            }
-        })();
-    }, [location, navigate, jwt]);
-
-    return <p style={{ color: '#fff' }}>Linking your Discord account, please wait...</p>;
-}
+export default DiscordCallback;
