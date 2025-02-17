@@ -1,17 +1,25 @@
 // src/pages/LinkDiscord.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LinkDiscord = () => {
-    // Retrieve the current user from localStorage (or your auth context)
+    const navigate = useNavigate();
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
-    const navigate = useNavigate();
+
+    // If the user is already linked, redirect them to the profile page.
+    useEffect(() => {
+        if (user && user.discord_id) {
+            navigate('/profile');
+        }
+    }, [user, navigate]);
 
     if (!user) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
-                <p className="text-white mb-4">You must be signed in to link your Discord account.</p>
+                <p className="text-white mb-4">
+                    You must be signed in to link your Discord account.
+                </p>
                 <button
                     className="bg-red-500 hover:bg-red-600 text-white p-3 rounded"
                     onClick={() => navigate('/login')}
@@ -22,7 +30,7 @@ const LinkDiscord = () => {
         );
     }
 
-    // Construct the Discord OAuth URL without the state parameter
+    // Construct the Discord OAuth URL without a state parameter
     const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
     )}&scope=identify+email`;
