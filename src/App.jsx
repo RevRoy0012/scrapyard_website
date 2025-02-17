@@ -11,7 +11,7 @@ import BlogPost from './components/BlogPost';
 import Video from './components/Video';
 import Sponsors from './components/Sponsors';
 
-import Login from './pages/Login';
+import Login from './pages/SignIn.jsx';
 import SignUp from './pages/SignUp';
 import LinkDiscord from './pages/LinkDiscord';
 import DiscordCallback from './pages/DiscordCallback';
