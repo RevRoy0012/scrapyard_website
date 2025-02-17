@@ -8,6 +8,7 @@ const Login = ({ onLoginSuccess }) => {
     const [isVerifying, setIsVerifying] = useState(false);
     const [verificationCode, setVerificationCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [notification, setNotification] = useState('');
 
     const navigate = useNavigate();
 
@@ -18,6 +19,7 @@ const Login = ({ onLoginSuccess }) => {
             return;
         }
         setIsLoading(true);
+        setNotification('Signing in...');
         try {
             const response = await fetch(
                 'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/auth/sign-in',
@@ -29,20 +31,25 @@ const Login = ({ onLoginSuccess }) => {
             );
             const result = await response.json();
             if (response.ok) {
-                // If verification is required, show the verification input
                 if (result.requiresVerification) {
                     setIsVerifying(true);
+                    setNotification('Verification required. Check your email.');
                 } else {
                     localStorage.setItem('user', JSON.stringify(result));
                     onLoginSuccess();
-                    navigate('/link-discord');
+                    setNotification('Login successful!');
+                    setTimeout(() => {
+                        navigate('/link-discord');
+                    }, 1000);
                 }
             } else {
                 alert(result.message || 'Sign in failed.');
+                setNotification('');
             }
         } catch (error) {
             console.error('Error signing in', error);
             alert('An error occurred during sign in.');
+            setNotification('');
         } finally {
             setIsLoading(false);
         }
@@ -55,6 +62,7 @@ const Login = ({ onLoginSuccess }) => {
             return;
         }
         setIsLoading(true);
+        setNotification('Verifying...');
         try {
             const response = await fetch(
                 'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/auth/sign-in',
@@ -68,13 +76,18 @@ const Login = ({ onLoginSuccess }) => {
             if (response.ok) {
                 localStorage.setItem('user', JSON.stringify(result));
                 onLoginSuccess();
-                navigate('/link-discord');
+                setNotification('Login successful!');
+                setTimeout(() => {
+                    navigate('/link-discord');
+                }, 1000);
             } else {
                 alert(result.message || 'Verification failed.');
+                setNotification('');
             }
         } catch (error) {
             console.error('Error verifying sign in', error);
             alert('An error occurred during verification.');
+            setNotification('');
         } finally {
             setIsLoading(false);
         }
@@ -121,6 +134,14 @@ const Login = ({ onLoginSuccess }) => {
                             {isLoading ? 'Verifying...' : 'Verify'}
                         </button>
                     </form>
+                )}
+                {notification && (
+                    <div className="mt-4 text-center text-white">
+                        <span>{notification}</span>
+                        {isLoading && (
+                            <div className="inline-block ml-2 border-t-2 border-b-2 border-white animate-spin h-4 w-4"></div>
+                        )}
+                    </div>
                 )}
                 <p className="mt-4 text-center text-gray-400">
                     Don't have an account?{' '}

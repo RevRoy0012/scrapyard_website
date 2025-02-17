@@ -13,6 +13,7 @@ import Video from './components/Video';
 import Sponsors from './components/Sponsors';
 
 // Pages
+import Profile from './pages/Profile';
 import Login from './pages/SignIn.jsx';
 import SignUp from './pages/SignUp';
 import LinkDiscord from './pages/LinkDiscord';
@@ -88,6 +89,11 @@ function App() {
                     element={<div style={{ color: '#fff', padding: '20px' }}>Page Not Found</div>}
                 />
             </Routes>
+
+            <Route
+                path="/profile"
+                element={loggedIn ? <Profile /> : <Navigate to="/login" replace />}
+            />
         </Router>
     );
 }

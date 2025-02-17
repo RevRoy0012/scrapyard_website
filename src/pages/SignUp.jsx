@@ -15,10 +15,12 @@ const SignUp = () => {
     const [verificationCode, setVerificationCode] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
+    const [notification, setNotification] = useState('');
 
     const handleSignUp = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+        setNotification('Signing up...');
         try {
             const response = await fetch(
                 'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/auth/sign-up',
@@ -30,14 +32,16 @@ const SignUp = () => {
             );
             const result = await response.json();
             if (response.ok) {
-                // Assume a verification code is sent to the user's email.
                 setIsVerifying(true);
+                setNotification('Verification code sent. Check your email.');
             } else {
                 alert(result.message || 'Sign up failed.');
+                setNotification('');
             }
         } catch (error) {
             console.error('Error signing up:', error);
             alert('An error occurred during sign up.');
+            setNotification('');
         } finally {
             setIsLoading(false);
         }
@@ -46,6 +50,7 @@ const SignUp = () => {
     const handleVerify = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+        setNotification('Verifying...');
         try {
             const response = await fetch(
                 'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/auth/sign-up',
@@ -58,13 +63,18 @@ const SignUp = () => {
             const result = await response.json();
             if (response.ok) {
                 localStorage.setItem('user', JSON.stringify(result));
-                navigate('/link-discord');
+                setNotification('Sign up successful!');
+                setTimeout(() => {
+                    navigate('/link-discord');
+                }, 1000);
             } else {
                 alert(result.message || 'Verification failed.');
+                setNotification('');
             }
         } catch (error) {
             console.error('Error verifying sign up:', error);
             alert('An error occurred during verification.');
+            setNotification('');
         } finally {
             setIsLoading(false);
         }
@@ -119,6 +129,14 @@ const SignUp = () => {
                             {isLoading ? 'Verifying...' : 'Verify'}
                         </button>
                     </form>
+                )}
+                {notification && (
+                    <div className="mt-4 text-center text-white">
+                        <span>{notification}</span>
+                        {isLoading && (
+                            <div className="inline-block ml-2 border-t-2 border-b-2 border-white animate-spin h-4 w-4"></div>
+                        )}
+                    </div>
                 )}
                 <p className="mt-4 text-center text-gray-400">
                     Already have an account?{' '}

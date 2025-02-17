@@ -3,7 +3,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const LinkDiscord = () => {
-    // Retrieve the current user from localStorage (or your auth context)
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
     const navigate = useNavigate();
@@ -22,8 +21,6 @@ const LinkDiscord = () => {
         );
     }
 
-    // Construct the Discord OAuth URL.
-    // The "state" parameter here is used to pass the user's email.
     const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
     )}&scope=identify%20email%20guilds.join&state=${encodeURIComponent(user.email)}`;

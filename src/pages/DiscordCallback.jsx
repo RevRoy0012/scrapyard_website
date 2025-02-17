@@ -7,11 +7,7 @@ const DiscordCallback = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Optionally, parse query parameters if needed:
         const query = new URLSearchParams(location.search);
-        // You could use any parameter (like a "success" flag) here.
-
-        // Redirect after a short delay (if needed)
         const timer = setTimeout(() => {
             navigate('/link-discord');
         }, 3000);
