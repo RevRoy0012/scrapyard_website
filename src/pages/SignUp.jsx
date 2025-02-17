@@ -17,6 +17,13 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [notification, setNotification] = useState('');
 
+    const storeUser = (result) => {
+        const userToStore = result.email
+            ? result
+            : { ...result, email: result.user_email };
+        localStorage.setItem('user', JSON.stringify(userToStore));
+    };
+
     const handleSignUp = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -62,7 +69,7 @@ const SignUp = () => {
             );
             const result = await response.json();
             if (response.ok) {
-                localStorage.setItem('user', JSON.stringify(result));
+                storeUser(result);
                 setNotification('Sign up successful!');
                 setTimeout(() => {
                     navigate('/link-discord');

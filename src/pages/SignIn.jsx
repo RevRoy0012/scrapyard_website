@@ -9,8 +9,15 @@ const Login = ({ onLoginSuccess }) => {
     const [verificationCode, setVerificationCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [notification, setNotification] = useState('');
-
     const navigate = useNavigate();
+
+    // Ensure the stored user always has an `email` property.
+    const storeUser = (result) => {
+        const userToStore = result.email
+            ? result
+            : { ...result, email: result.user_email };
+        localStorage.setItem('user', JSON.stringify(userToStore));
+    };
 
     const handleSignIn = async (e) => {
         e.preventDefault();
@@ -35,7 +42,7 @@ const Login = ({ onLoginSuccess }) => {
                     setIsVerifying(true);
                     setNotification('Verification required. Check your email.');
                 } else {
-                    localStorage.setItem('user', JSON.stringify(result));
+                    storeUser(result);
                     onLoginSuccess();
                     setNotification('Login successful!');
                     setTimeout(() => {
@@ -74,7 +81,7 @@ const Login = ({ onLoginSuccess }) => {
             );
             const result = await response.json();
             if (response.ok) {
-                localStorage.setItem('user', JSON.stringify(result));
+                storeUser(result);
                 onLoginSuccess();
                 setNotification('Login successful!');
                 setTimeout(() => {

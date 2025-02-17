@@ -5,9 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 const HeroSection = () => {
     const [scrolling, setScrolling] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [user, setUser] = useState(null); // Expected to have at least { profilePicture }
+    const [user, setUser] = useState(null); // Expected to have at least { profilePicture, email }
     const [dropdownOpen, setDropdownOpen] = useState(false);
-
     const navigate = useNavigate();
 
     const handleScroll = () => {
@@ -28,11 +27,12 @@ const HeroSection = () => {
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('user');  // Clear local storage
+        // Clear all local storage data
+        localStorage.clear();
         setUser(null);
         setIsAuthenticated(false);
         setDropdownOpen(false);
-        navigate('/login');  // Navigate to the login page
+        navigate('/login'); // Navigate to login page after logout
     };
 
     const toggleDropdown = () => {
