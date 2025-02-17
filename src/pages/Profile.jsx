@@ -24,8 +24,10 @@ const Profile = ({ onLogout }) => {
     }
 
     const handleLogout = () => {
-        localStorage.removeItem('user');
-        if (onLogout) onLogout();
+        localStorage.removeItem('user'); // clear the user data
+        if (onLogout) {
+            onLogout();
+        }
         navigate('/login');
     };
 
