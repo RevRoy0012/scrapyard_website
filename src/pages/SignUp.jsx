@@ -1,4 +1,3 @@
-// src/pages/SignUp.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -18,9 +17,7 @@ const SignUp = () => {
     const [notification, setNotification] = useState('');
 
     const storeUser = (result) => {
-        const userToStore = result.email
-            ? result
-            : { ...result, email: result.user_email };
+        const userToStore = result.email ? result : { ...result, email: email };
         localStorage.setItem('user', JSON.stringify(userToStore));
     };
 

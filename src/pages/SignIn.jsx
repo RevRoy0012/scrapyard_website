@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -11,11 +10,10 @@ const Login = ({ onLoginSuccess }) => {
     const [notification, setNotification] = useState('');
     const navigate = useNavigate();
 
-    // Ensure the stored user always has an `email` property.
+    // Helper to store the user so it always has an "email" field.
     const storeUser = (result) => {
-        const userToStore = result.email
-            ? result
-            : { ...result, email: result.user_email };
+        // If result doesn't have "email" but has "user_email", use that.
+        const userToStore = result.email ? result : { ...result, email: result.user_email || email };
         localStorage.setItem('user', JSON.stringify(userToStore));
     };
 

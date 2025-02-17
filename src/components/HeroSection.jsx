@@ -1,11 +1,10 @@
-// src/components/HeroSection.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
     const [scrolling, setScrolling] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [user, setUser] = useState(null); // Expected to have at least { profilePicture, email }
+    const [user, setUser] = useState(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -15,7 +14,6 @@ const HeroSection = () => {
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
-        // Check for user info in localStorage
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             setUser(JSON.parse(storedUser));
@@ -27,12 +25,11 @@ const HeroSection = () => {
     }, []);
 
     const handleLogout = () => {
-        // Clear all local storage data
-        localStorage.clear();
+        localStorage.removeItem('user');
         setUser(null);
         setIsAuthenticated(false);
         setDropdownOpen(false);
-        navigate('/login'); // Navigate to login page after logout
+        navigate('/login');
     };
 
     const toggleDropdown = () => {
@@ -50,7 +47,6 @@ const HeroSection = () => {
                 } transition-opacity duration-500`}
             ></div>
 
-            {/* Top Right Auth Area */}
             <div className="absolute top-0 right-0 m-4 z-20">
                 {!isAuthenticated ? (
                     <div className="space-x-2">
@@ -109,7 +105,6 @@ const HeroSection = () => {
                 )}
             </div>
 
-            {/* Parallax Content */}
             <div
                 className={`relative z-10 flex flex-col items-center justify-center h-full text-center transition-all duration-500 transform ${
                     scrolling ? 'scale-95' : ''
@@ -121,8 +116,6 @@ const HeroSection = () => {
                 <p className="text-xl text-white mt-4 animate__animated animate__fadeIn animate__delay-1s">
                     Join us for the best car community experience
                 </p>
-
-                {/* Social Media Buttons */}
                 <div className="flex justify-center mt-8 space-x-6 animate__animated animate__fadeIn animate__delay-2s">
                     <a
                         href="https://discord.gg/xmy9vnNEZn"
