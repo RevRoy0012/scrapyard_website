@@ -88,12 +88,12 @@ function App() {
                     path="*"
                     element={<div style={{ color: '#fff', padding: '20px' }}>Page Not Found</div>}
                 />
-            </Routes>
 
-            <Route
-                path="/profile"
-                element={loggedIn ? <Profile /> : <Navigate to="/login" replace />}
-            />
+                <Route
+                    path="/profile"
+                    element={loggedIn ? <Profile /> : <Navigate to="/login" replace />}
+                />
+            </Routes>
         </Router>
     );
 }
