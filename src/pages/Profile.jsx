@@ -1,3 +1,4 @@
+// src/pages/Profile.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,7 +8,7 @@ const Profile = ({ onLogout }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Retrieve the user from localStorage
+        // Retrieve the user from localStorage.
         const storedUser = localStorage.getItem('user');
         if (!storedUser) {
             navigate('/login');
@@ -15,18 +16,16 @@ const Profile = ({ onLogout }) => {
         }
         const localUser = JSON.parse(storedUser);
 
-        // Fetch the up-to-date profile data from the secure endpoint.
+        // Fetch the up-to-date profile data.
         fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // Assumes you store the JWT token as jwtToken in local storage.
-                'Authorization': `Bearer ${localUser.jwtToken}`
+                'Authorization': `Bearer ${localUser.jwtToken}` // Ensure jwtToken is stored
             },
         })
             .then((res) => res.json())
             .then((data) => {
-                // Update the user state with fresh data.
                 setUser(data);
                 setLoading(false);
             })

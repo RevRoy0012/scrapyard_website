@@ -1,3 +1,4 @@
+// src/pages/DiscordCallback.jsx
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -6,9 +7,8 @@ const DiscordCallback = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Optionally process any query parameters from Discord here.
         const timer = setTimeout(() => {
-            navigate('/link-discord');
+            navigate('/discord-success');
         }, 3000);
         return () => clearTimeout(timer);
     }, [location, navigate]);
