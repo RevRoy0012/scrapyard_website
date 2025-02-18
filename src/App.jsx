@@ -88,9 +88,9 @@ function App() {
                     path="/link-discord"
                     element={
                         loggedIn
-                            ? user && user.discord_linked
+                            ? (user && user.discord_linked
                                 ? <Navigate to="/profile" replace />
-                                : <LinkDiscord />
+                                : <LinkDiscord />)
                             : <Navigate to="/login" replace />
                     }
                 />

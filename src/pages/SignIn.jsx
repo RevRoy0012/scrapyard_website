@@ -13,6 +13,7 @@ const Login = ({ onLoginSuccess }) => {
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     const storeUser = (result) => {
         const userToStore = result.email ? result : { ...result, email: result.user_email || email };
@@ -22,6 +23,12 @@ const Login = ({ onLoginSuccess }) => {
     const handleSignIn = async () => {
         if (!email || !password) {
             setNotification({ message: 'Please enter email and password.', type: 'error' });
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            setNotification({ message: 'Please enter a valid email address.', type: 'error' });
+            setIsLoading(false);
             return;
         }
         setIsLoading(true);
