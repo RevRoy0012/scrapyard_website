@@ -1,3 +1,4 @@
+// src/pages/LinkDiscord.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,6 +24,12 @@ const LinkDiscord = () => {
         );
     }
 
+    // If discord is already linked, redirect to profile.
+    if (user.discord_linked) {
+        navigate('/profile');
+        return null;
+    }
+
     // Build the Discord OAuth URL using the user's email as state.
     const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
@@ -44,10 +51,7 @@ const LinkDiscord = () => {
             >
                 Link Discord
             </button>
-            <button onClick={() => navigate('/')}
-                    className="bg-red-600 hover:bg-red-700 text-white p-3 rounded"
-
-            >
+            <button onClick={() => navigate('/')} className="bg-red-600 hover:bg-red-700 text-white p-3 rounded mt-4">
                 No Thanks
             </button>
         </div>

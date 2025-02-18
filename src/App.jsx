@@ -18,18 +18,19 @@ import DiscordCallback from './pages/DiscordCallback';
 import Profile from './pages/Profile';
 import DiscordSuccess from "./pages/DiscordSuccess.jsx";
 
-
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
     useEffect(() => {
         window.scrollTo(0, 1);
-        const user = localStorage.getItem('user');
-        if (user) {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
             setLoggedIn(true);
+            setUser(JSON.parse(storedUser));
         } else {
             setLoggedIn(false);
+            setUser(null);
         }
     }, []);
 
@@ -42,9 +43,10 @@ function App() {
     };
 
     const handleLogout = () => {
+        localStorage.removeItem('user');
         setLoggedIn(false);
         setUser(null);
-    };;
+    };
 
     return (
         <Router>
@@ -101,13 +103,10 @@ function App() {
                 {/* Profile Page Route */}
                 <Route
                     path="/profile"
-                    element={loggedIn ? <Profile onLogout={handleLogout} /> : <Navigate to="/" replace />}
+                    element={loggedIn ? <Profile onLogout={handleLogout} /> : <Navigate to="/login" replace />}
                 />
 
-                <Route
-                    path="/discord-success"
-                    element={<DiscordSuccess />}
-                />
+                <Route path="/discord-success" element={<DiscordSuccess />} />
 
                 {/* Handle unknown routes */}
                 <Route path="*" element={<div style={{ color: '#fff', padding: '20px' }}>Page Not Found</div>} />
