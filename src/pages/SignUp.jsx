@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Notification from '../components/Notification';
+import Spinner from '../components/Spinner';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -13,12 +14,14 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [showPassword, setShowPassword] = useState(false);
+    const [isPasswordFocused, setIsPasswordFocused] = useState(false);
     const [passwordValidation, setPasswordValidation] = useState({
         length: false,
         hasNumber: false,
         hasSpecialChar: false,
     });
 
+    // Update password and validation state.
     const handlePasswordChange = (value) => {
         setPassword(value);
         setPasswordValidation({
@@ -28,16 +31,6 @@ const SignUp = () => {
         });
     };
 
-    const getPasswordStrength = () => {
-        const { length, hasNumber, hasSpecialChar } = passwordValidation;
-        if (!password) return '';
-        if (!length) return 'Too Short';
-        const criteriaMet = [hasNumber, hasSpecialChar].filter(Boolean).length;
-        if (criteriaMet === 0) return 'Weak';
-        if (criteriaMet === 1) return 'Moderate';
-        return 'Strong';
-    };
-
     const storeUser = (result) => {
         const userToStore = result.email ? result : { ...result, email: result.user_email || email };
         localStorage.setItem('user', JSON.stringify(userToStore));
@@ -45,6 +38,22 @@ const SignUp = () => {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
+        // Validate input:
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+        if (!email || !emailRegex.test(email)) {
+            setNotification({ message: 'Please enter a valid email address.', type: 'error' });
+            return;
+        }
+        if (!username || !usernameRegex.test(username)) {
+            setNotification({ message: 'Username must be alphanumeric, 3-20 characters long.', type: 'error' });
+            return;
+        }
+        if (!passwordValidation.length || !passwordValidation.hasNumber || !passwordValidation.hasSpecialChar) {
+            setNotification({ message: 'Password must be at least 8 characters and include a number and a special character.', type: 'error' });
+            return;
+        }
+
         setIsLoading(true);
         setNotification({ message: 'Signing up...', type: 'info' });
         try {
@@ -104,8 +113,9 @@ const SignUp = () => {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-4">
-            <div className="w-full max-w-md p-8 bg-gray-800 rounded shadow">
-                <button onClick={() => navigate('/')} className="mb-4 text-white underline">
+            {isLoading && <Spinner />}
+            <div className="w-full max-w-md p-8 bg-gray-800 rounded shadow relative">
+                <button onClick={() => navigate('/')} className="mb-4 text-white underline absolute top-4 left-4">
                     &larr; Back
                 </button>
                 <h2 className="text-2xl text-white mb-6 text-center">Sign Up</h2>
@@ -137,6 +147,8 @@ const SignUp = () => {
                                 className="w-full p-3 rounded bg-gray-700 text-white"
                                 value={password}
                                 onChange={(e) => handlePasswordChange(e.target.value)}
+                                onFocus={() => setIsPasswordFocused(true)}
+                                onBlur={() => setIsPasswordFocused(false)}
                                 required
                             />
                             <button
@@ -147,9 +159,17 @@ const SignUp = () => {
                                 {showPassword ? 'Hide' : 'Show'}
                             </button>
                         </div>
-                        {password && (
-                            <div className="text-sm text-gray-300 mb-4">
-                                Password Strength: <span className="font-semibold">{getPasswordStrength()}</span>
+                        {isPasswordFocused && (
+                            <div className="mb-4 text-sm text-gray-300">
+                                <div style={{ transition: 'text-decoration 0.3s', textDecoration: passwordValidation.length ? 'line-through' : 'none' }}>
+                                    At least 8 characters
+                                </div>
+                                <div style={{ transition: 'text-decoration 0.3s', textDecoration: passwordValidation.hasNumber ? 'line-through' : 'none' }}>
+                                    Includes a number
+                                </div>
+                                <div style={{ transition: 'text-decoration 0.3s', textDecoration: passwordValidation.hasSpecialChar ? 'line-through' : 'none' }}>
+                                    Includes a special character
+                                </div>
                             </div>
                         )}
                         <button type="submit" className="w-full bg-red-500 p-3 rounded text-white">

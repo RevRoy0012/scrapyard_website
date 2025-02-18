@@ -1,35 +1,47 @@
 // src/components/Notification.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const Notification = ({ message, type }) => {
-    if (!message) return null;
+const Notification = ({ message, type, duration = 3000 }) => {
+    const [visible, setVisible] = useState(!!message);
 
-    // Basic styles; adjust as needed for your site design.
-    const baseStyle = {
-        padding: '10px 20px',
-        borderRadius: '5px',
-        margin: '10px 0',
-        textAlign: 'center',
-        fontSize: '16px',
-        transition: 'opacity 0.3s ease-in-out',
-    };
+    useEffect(() => {
+        if (message) {
+            setVisible(true);
+            const timer = setTimeout(() => {
+                setVisible(false);
+            }, duration);
+            return () => clearTimeout(timer);
+        } else {
+            setVisible(false);
+        }
+    }, [message, duration]);
 
-    let style = {};
-    switch (type) {
-        case 'success':
-            style = { backgroundColor: '#28a745', color: '#fff' };
-            break;
-        case 'error':
-            style = { backgroundColor: '#dc3545', color: '#fff' };
-            break;
-        case 'info':
-            style = { backgroundColor: '#17a2b8', color: '#fff' };
-            break;
-        default:
-            style = { backgroundColor: '#6c757d', color: '#fff' };
-            break;
-    }
-    return <div style={{ ...baseStyle, ...style }}>{message}</div>;
+    if (!visible || !message) return null;
+
+    let bgColor = '#6c757d';
+    if (type === 'success') bgColor = '#28a745';
+    else if (type === 'error') bgColor = '#dc3545';
+    else if (type === 'info') bgColor = '#17a2b8';
+
+    return (
+        <div
+            style={{
+                position: 'fixed',
+                top: '20px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                backgroundColor: bgColor,
+                color: '#fff',
+                padding: '12px 20px',
+                borderRadius: '5px',
+                zIndex: 1000,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                fontSize: '16px',
+            }}
+        >
+            {message}
+        </div>
+    );
 };
 
 export default Notification;

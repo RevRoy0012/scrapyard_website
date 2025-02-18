@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Notification from '../components/Notification';
+import Spinner from '../components/Spinner';
 
 const Login = ({ onLoginSuccess }) => {
     const [email, setEmail] = useState('');
@@ -95,8 +96,9 @@ const Login = ({ onLoginSuccess }) => {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-4">
-            <div className="w-full max-w-md p-8 bg-gray-800 rounded shadow">
-                <button onClick={() => navigate('/')} className="mb-4 text-white underline">
+            {isLoading && <Spinner />}
+            <div className="w-full max-w-md p-8 bg-gray-800 rounded shadow relative">
+                <button onClick={() => navigate('/')} className="mb-4 text-white underline absolute top-4 left-4">
                     &larr; Back
                 </button>
                 <h2 className="text-2xl text-white mb-6 text-center">Sign In</h2>
