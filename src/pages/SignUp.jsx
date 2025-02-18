@@ -22,7 +22,7 @@ const SignUp = () => {
         setNotification('Signing up...');
         try {
             const response = await fetch(
-                'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/auth/sign-up',
+                'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/sign-up',
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

@@ -69,7 +69,7 @@ const Login = ({ onLoginSuccess }) => {
         setNotification('Verifying...');
         try {
             const response = await fetch(
-                'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/auth/sign-in',
+                'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/sign-in',
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
