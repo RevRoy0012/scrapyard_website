@@ -18,19 +18,18 @@ import DiscordCallback from './pages/DiscordCallback';
 import Profile from './pages/Profile';
 import DiscordSuccess from "./pages/DiscordSuccess.jsx";
 
+
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
 
     useEffect(() => {
         window.scrollTo(0, 1);
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
+        const user = localStorage.getItem('user');
+        if (user) {
             setLoggedIn(true);
-            setUser(JSON.parse(storedUser));
         } else {
             setLoggedIn(false);
-            setUser(null);
         }
     }, []);
 
@@ -45,7 +44,7 @@ function App() {
     const handleLogout = () => {
         setLoggedIn(false);
         setUser(null);
-    };
+    };;
 
     return (
         <Router>
@@ -89,9 +88,9 @@ function App() {
                     path="/link-discord"
                     element={
                         loggedIn
-                            ? (user && user.discord_linked
+                            ? user && user.discord_linked
                                 ? <Navigate to="/profile" replace />
-                                : <LinkDiscord />)
+                                : <LinkDiscord />
                             : <Navigate to="/login" replace />
                     }
                 />
@@ -105,7 +104,6 @@ function App() {
                     element={loggedIn ? <Profile onLogout={handleLogout} /> : <Navigate to="/login" replace />}
                 />
 
-                {/* Discord Success Page */}
                 <Route
                     path="/discord-success"
                     element={<DiscordSuccess />}
