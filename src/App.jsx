@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import 'animate.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Spinner from './components/Spinner';
 
 import HeroSection from './components/HeroSection';
 import WhoWeAre from './components/WhoWeAre';
@@ -16,37 +17,49 @@ import SignUp from './pages/SignUp';
 import LinkDiscord from './pages/LinkDiscord';
 import DiscordCallback from './pages/DiscordCallback';
 import Profile from './pages/Profile';
-import DiscordSuccess from "./pages/DiscordSuccess.jsx";
+import DiscordSuccess from './pages/DiscordSuccess.jsx';
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
+    const [loadingUser, setLoadingUser] = useState(true); // Loading state for fetching user data
 
     useEffect(() => {
         window.scrollTo(0, 1);
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
-            setLoggedIn(true);
-            setUser(JSON.parse(storedUser));
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                // Fetch fresh user data using email query parameter.
+                fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${parsedUser.email}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        const updatedUser = { ...parsedUser, ...data };
+                        localStorage.setItem('user', JSON.stringify(updatedUser));
+                        setUser(updatedUser);
+                        setLoggedIn(true);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching fresh user data:", error);
+                        setUser(parsedUser);
+                        setLoggedIn(true);
+                    })
+                    .finally(() => setLoadingUser(false));
+            } catch (error) {
+                console.error("Error parsing stored user:", error);
+                setLoadingUser(false);
+            }
         } else {
-            setLoggedIn(false);
-            setUser(null);
+            setLoadingUser(false);
         }
     }, []);
 
-    const handleLoginSuccess = () => {
-        setLoggedIn(true);
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
-    };
-
-    const handleLogout = () => {
-        localStorage.removeItem('user');
-        setLoggedIn(false);
-        setUser(null);
-    };
+    if (loadingUser) {
+        return <Spinner />;
+    }
 
     return (
         <Router>
@@ -74,7 +87,11 @@ function App() {
                         loggedIn ? (
                             <Navigate to="/link-discord" replace />
                         ) : (
-                            <Login onLoginSuccess={handleLoginSuccess} />
+                            <Login onLoginSuccess={() => {
+                                setLoggedIn(true);
+                                const storedUser = localStorage.getItem('user');
+                                if (storedUser) setUser(JSON.parse(storedUser));
+                            }} />
                         )
                     }
                 />
@@ -103,7 +120,7 @@ function App() {
                 {/* Profile Page Route */}
                 <Route
                     path="/profile"
-                    element={loggedIn ? <Profile onLogout={handleLogout} /> : <Navigate to="/login" replace />}
+                    element={loggedIn ? <Profile onLogout={() => { setLoggedIn(false); setUser(null); }} /> : <Navigate to="/login" replace />}
                 />
 
                 <Route path="/discord-success" element={<DiscordSuccess />} />

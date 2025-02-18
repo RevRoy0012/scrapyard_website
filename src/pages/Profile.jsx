@@ -7,15 +7,13 @@ import Spinner from '../components/Spinner';
 const Profile = ({ onLogout }) => {
     const navigate = useNavigate();
 
-    // Local state
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);           // For initial profile fetch
-    const [actionLoading, setActionLoading] = useState(false); // For any action (username update, unlink, etc.)
+    const [loading, setLoading] = useState(true);           // Initial profile fetch
+    const [actionLoading, setActionLoading] = useState(false); // For profile actions
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [editingUsername, setEditingUsername] = useState(false);
     const [newUsername, setNewUsername] = useState('');
 
-    // Fetch profile data on mount
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (!storedUser) {
@@ -24,33 +22,34 @@ const Profile = ({ onLogout }) => {
         }
         const localUser = JSON.parse(storedUser);
 
-        // Fetch up-to-date profile data using email query parameter.
+        // Immediately use local data for a fast render
+        setUser(localUser);
+
+        // Then fetch fresh data from the server
         fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${localUser.email}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
-            .then((res) => res.json())
-            .then((data) => {
+            .then(res => res.json())
+            .then(data => {
                 const updatedUser = { ...localUser, ...data };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
                 setUser(updatedUser);
                 setLoading(false);
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error('Error fetching profile data:', error);
-                setUser(localUser);
                 setLoading(false);
             });
     }, [navigate]);
 
-    // Logout handler
     const handleLogout = () => {
         localStorage.removeItem('user');
         onLogout && onLogout();
         navigate('/login');
     };
 
-    // Handle username update.
+    // Handle username update
     const handleChangeUsername = async () => {
         if (!newUsername.trim()) {
             setNotification({ message: 'New username cannot be empty', type: 'error' });
@@ -59,24 +58,19 @@ const Profile = ({ onLogout }) => {
         setActionLoading(true);
         try {
             const payload = {
-                email: user.email, // Always include the email from current user state
+                email: user.email,
                 currentUsername: user.username,
-                newUsername: newUsername,
+                newUsername,
             };
-            const response = await fetch(
-                'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/change-username',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                }
-            );
+            const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/change-username', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
             const result = await response.json();
             if (response.ok) {
-                // If the backend response doesn't include email, add it back
-                if (!result.user.email) {
-                    result.user.email = user.email;
-                }
+                // Ensure the updated user always has an email field
+                if (!result.user.email) result.user.email = user.email;
                 setUser(result.user);
                 localStorage.setItem('user', JSON.stringify(result.user));
                 setNotification({ message: 'Username updated successfully', type: 'success' });
@@ -91,7 +85,7 @@ const Profile = ({ onLogout }) => {
         setActionLoading(false);
     };
 
-    // Handle unlinking Discord.
+    // Handle unlinking Discord
     const handleUnlinkDiscord = async () => {
         setActionLoading(true);
         try {
@@ -115,7 +109,7 @@ const Profile = ({ onLogout }) => {
         setActionLoading(false);
     };
 
-    // Handle resending verification email.
+    // Handle resending verification email
     const handleResendVerification = async () => {
         setActionLoading(true);
         try {
@@ -150,9 +144,9 @@ const Profile = ({ onLogout }) => {
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6 relative">
-            {/* Fixed notification toast at top */}
+            {/* Fixed notification toast */}
             <Notification message={notification.message} type={notification.type} />
-            {/* Full-screen spinner overlay for actions */}
+            {/* Full-page spinner overlay for actions */}
             {actionLoading && <Spinner />}
             <div className="bg-gray-800 p-6 rounded shadow w-full max-w-md mt-16">
                 <div className="flex items-center justify-between">
@@ -167,9 +161,7 @@ const Profile = ({ onLogout }) => {
                     className="w-24 h-24 rounded-full mx-auto my-4"
                 />
                 <div className="mb-4">
-                    <p className="text-lg">
-                        <span className="font-semibold">Email:</span> {user.email}
-                    </p>
+                    <p className="text-lg"><span className="font-semibold">Email:</span> {user.email}</p>
                     <p className="text-lg">
                         <span className="font-semibold">Username:</span>{' '}
                         {editingUsername ? (
@@ -224,7 +216,7 @@ const Profile = ({ onLogout }) => {
                             </button>
                         </div>
                     )}
-                    {/* Unlink Discord (only if linked) */}
+                    {/* Unlink Discord (if linked) */}
                     {user.discord_linked && (
                         <button
                             onClick={handleUnlinkDiscord}
