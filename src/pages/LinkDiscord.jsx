@@ -40,11 +40,12 @@ const LinkDiscord = () => {
             </p>
             <button
                 onClick={handleLinkDiscord}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded"
+                className="bg-red-600 hover:bg-red-700 text-white p-3 rounded"
             >
                 Link Discord
             </button>
-            <button onClick={() => navigate('/')} className="mt-4"
+            <button onClick={() => navigate('/')}
+                    className="bg-red-600 hover:bg-red-700 text-white p-3 rounded"
 
             >
                 No Thanks

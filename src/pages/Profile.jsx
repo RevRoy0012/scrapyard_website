@@ -16,17 +16,19 @@ const Profile = ({ onLogout }) => {
         }
         const localUser = JSON.parse(storedUser);
 
-        // Fetch the up-to-date profile data.
-        fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile', {
+        // Fetch the up-to-date profile data using the email query parameter.
+        fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${localUser.email}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localUser.jwtToken}` // Ensure jwtToken is stored
             },
         })
             .then((res) => res.json())
             .then((data) => {
+                // Update both the state and local storage.
                 setUser(data);
+                const updatedUser = { ...localUser, ...data };
+                localStorage.setItem('user', JSON.stringify(updatedUser));
                 setLoading(false);
             })
             .catch((error) => {

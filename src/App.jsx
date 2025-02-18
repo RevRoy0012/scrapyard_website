@@ -16,7 +16,7 @@ import SignUp from './pages/SignUp';
 import LinkDiscord from './pages/LinkDiscord';
 import DiscordCallback from './pages/DiscordCallback';
 import Profile from './pages/Profile';
-
+import discordSuccess from "./pages/DiscordSuccess.jsx";
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
 
@@ -88,6 +88,11 @@ function App() {
                 <Route
                     path="/profile"
                     element={loggedIn ? <Profile onLogout={handleLogout} /> : <Navigate to="/login" replace />}
+                />
+
+                <Route
+                    path="/discord-success"
+                    element={<discordSuccess />}
                 />
 
                 {/* Handle unknown routes */}
