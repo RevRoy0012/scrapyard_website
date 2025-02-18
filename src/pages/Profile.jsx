@@ -6,14 +6,16 @@ import Spinner from '../components/Spinner';
 
 const Profile = ({ onLogout }) => {
     const navigate = useNavigate();
+
+    // Local state
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [actionLoading, setActionLoading] = useState(false);
+    const [loading, setLoading] = useState(true);         // For initial profile fetch
+    const [actionLoading, setActionLoading] = useState(false); // For any action (username update, unlink, etc.)
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [editingUsername, setEditingUsername] = useState(false);
     const [newUsername, setNewUsername] = useState('');
 
-    // Load the user from localStorage and then refresh profile data from server.
+    // Fetch profile data on mount
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (!storedUser) {
@@ -22,7 +24,7 @@ const Profile = ({ onLogout }) => {
         }
         const localUser = JSON.parse(storedUser);
 
-        // Fetch up-to-date profile data using email query.
+        // Fetch up-to-date profile data using email query parameter.
         fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${localUser.email}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -41,13 +43,14 @@ const Profile = ({ onLogout }) => {
             });
     }, [navigate]);
 
+    // Logout handler
     const handleLogout = () => {
         localStorage.removeItem('user');
         onLogout && onLogout();
         navigate('/login');
     };
 
-    // Handle username update.
+    // Change username handler
     const handleChangeUsername = async () => {
         if (!newUsername.trim()) {
             setNotification({ message: 'New username cannot be empty', type: 'error' });
@@ -58,10 +61,12 @@ const Profile = ({ onLogout }) => {
             const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/change-username', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                // Use the current user.username from state as the current username
                 body: JSON.stringify({ email: user.email, currentUsername: user.username, newUsername }),
             });
             const result = await response.json();
             if (response.ok) {
+                // Update state and localStorage with the new user data
                 setUser(result.user);
                 localStorage.setItem('user', JSON.stringify(result.user));
                 setNotification({ message: 'Username updated successfully', type: 'success' });
@@ -71,12 +76,12 @@ const Profile = ({ onLogout }) => {
             }
         } catch (error) {
             console.error('Error updating username:', error);
-            setNotification({ message: 'An error occurred', type: 'error' });
+            setNotification({ message: 'An error occurred while updating username', type: 'error' });
         }
         setActionLoading(false);
     };
 
-    // Handle unlinking Discord.
+    // Unlink Discord handler
     const handleUnlinkDiscord = async () => {
         setActionLoading(true);
         try {
@@ -95,12 +100,12 @@ const Profile = ({ onLogout }) => {
             }
         } catch (error) {
             console.error('Error unlinking Discord:', error);
-            setNotification({ message: 'An error occurred', type: 'error' });
+            setNotification({ message: 'An error occurred while unlinking Discord', type: 'error' });
         }
         setActionLoading(false);
     };
 
-    // Handle resending verification email.
+    // Resend verification email handler
     const handleResendVerification = async () => {
         setActionLoading(true);
         try {
@@ -117,7 +122,7 @@ const Profile = ({ onLogout }) => {
             }
         } catch (error) {
             console.error('Error resending verification email:', error);
-            setNotification({ message: 'An error occurred', type: 'error' });
+            setNotification({ message: 'An error occurred while sending verification email', type: 'error' });
         }
         setActionLoading(false);
     };
@@ -135,8 +140,9 @@ const Profile = ({ onLogout }) => {
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6 relative">
-            {/* Fixed notification at top */}
+            {/* Fixed notification toast */}
             <Notification message={notification.message} type={notification.type} />
+            {/* Overlay spinner for actions */}
             {actionLoading && <Spinner />}
             <div className="bg-gray-800 p-6 rounded shadow w-full max-w-md mt-16">
                 <div className="flex items-center justify-between">
@@ -151,9 +157,11 @@ const Profile = ({ onLogout }) => {
                     className="w-24 h-24 rounded-full mx-auto my-4"
                 />
                 <div className="mb-4">
-                    <p className="text-lg"><span className="font-semibold">Email:</span> {user.email}</p>
                     <p className="text-lg">
-                        <span className="font-semibold">Username:</span>{" "}
+                        <span className="font-semibold">Email:</span> {user.email}
+                    </p>
+                    <p className="text-lg">
+                        <span className="font-semibold">Username:</span>{' '}
                         {editingUsername ? (
                             <input
                                 type="text"
@@ -167,16 +175,17 @@ const Profile = ({ onLogout }) => {
                         )}
                     </p>
                     <p className="text-lg mb-2">
-                        <span className="font-semibold">Discord Linked:</span>{" "}
-                        {user.discord_linked ? "Yes" : "No"}
+                        <span className="font-semibold">Discord Linked:</span>{' '}
+                        {user.discord_linked ? 'Yes' : 'No'}
                     </p>
                     <p className="text-lg mb-2">
-                        <span className="font-semibold">Email Verified:</span>{" "}
-                        {user.verified_email ? "Yes" : "No"}
+                        <span className="font-semibold">Email Verified:</span>{' '}
+                        {user.verified_email ? 'Yes' : 'No'}
                     </p>
                 </div>
                 {/* Action Buttons */}
                 <div className="space-y-3">
+                    {/* Change Username */}
                     {!editingUsername && (
                         <button
                             onClick={() => {
@@ -194,7 +203,7 @@ const Profile = ({ onLogout }) => {
                                 onClick={handleChangeUsername}
                                 className="flex-grow bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded"
                             >
-                                {actionLoading ? "Updating..." : "Update Username"}
+                                Update Username
                             </button>
                             <button
                                 onClick={() => {
@@ -207,20 +216,22 @@ const Profile = ({ onLogout }) => {
                             </button>
                         </div>
                     )}
+                    {/* Unlink Discord (only if linked) */}
                     {user.discord_linked && (
                         <button
                             onClick={handleUnlinkDiscord}
                             className="w-full bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded"
                         >
-                            {actionLoading ? "Processing..." : "Unlink Discord"}
+                            Unlink Discord
                         </button>
                     )}
+                    {/* Verify Email (if not verified) */}
                     {!user.verified_email && (
                         <button
                             onClick={handleResendVerification}
                             className="w-full bg-green-500 hover:bg-green-600 px-4 py-2 rounded"
                         >
-                            {actionLoading ? "Sending..." : "Verify Email"}
+                            Verify Email
                         </button>
                     )}
                     <button
