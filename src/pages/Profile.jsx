@@ -59,18 +59,24 @@ const Profile = ({ onLogout }) => {
         setActionLoading(true);
         try {
             const payload = {
-                email: user.email, // Provide email from localStorage
+                email: user.email, // Always include the email from current user state
                 currentUsername: user.username,
                 newUsername: newUsername,
             };
-            const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/change-username', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
+            const response = await fetch(
+                'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/change-username',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                }
+            );
             const result = await response.json();
             if (response.ok) {
-                // Update state and localStorage with the new user data
+                // If the backend response doesn't include email, add it back
+                if (!result.user.email) {
+                    result.user.email = user.email;
+                }
                 setUser(result.user);
                 localStorage.setItem('user', JSON.stringify(result.user));
                 setNotification({ message: 'Username updated successfully', type: 'success' });
