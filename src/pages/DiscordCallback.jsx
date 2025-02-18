@@ -7,7 +7,7 @@ const DiscordCallback = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // You could optionally parse and log any query parameters here.
+        // Optionally, parse query parameters here if needed.
         const timer = setTimeout(() => {
             navigate('/discord-success');
         }, 3000);

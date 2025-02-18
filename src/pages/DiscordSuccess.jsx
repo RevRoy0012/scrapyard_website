@@ -1,34 +1,41 @@
 // src/pages/DiscordSuccess.jsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../components/Spinner';
 
 const DiscordSuccess = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Retrieve the stored user from localStorage
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            const user = JSON.parse(storedUser);
-            // Fetch updated profile data using the stored email as query parameter
-            fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${user.email}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                    // Since we're no longer using JWT, we just need the email.
-                },
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    // Merge the fetched data into the stored user object
+        const updateUserData = async () => {
+            try {
+                const storedUser = localStorage.getItem('user');
+                if (storedUser) {
+                    const user = JSON.parse(storedUser);
+                    // Fetch updated profile data using the email query parameter.
+                    const response = await fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${user.email}`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' },
+                    });
+                    const data = await response.json();
+                    // Merge the fetched data into the stored user object.
                     const updatedUser = { ...user, ...data };
                     localStorage.setItem('user', JSON.stringify(updatedUser));
-                })
-                .catch((error) => {
-                    console.error("Error updating user data on Discord success:", error);
-                });
-        }
+                }
+            } catch (error) {
+                console.error("Error updating user data on Discord success:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        updateUserData();
     }, []);
+
+    if (loading) {
+        return <Spinner />;
+    }
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
