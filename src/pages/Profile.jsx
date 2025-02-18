@@ -58,15 +58,18 @@ const Profile = ({ onLogout }) => {
         }
         setActionLoading(true);
         try {
+            const payload = {
+                email: user.email, // Include email here
+                currentUsername: user.username,
+                newUsername,
+            };
             const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/change-username', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                // Use the current user.username from state as the current username
-                body: JSON.stringify({ email: user.email, currentUsername: user.username, newUsername }),
+                body: JSON.stringify(payload),
             });
             const result = await response.json();
             if (response.ok) {
-                // Update state and localStorage with the new user data
                 setUser(result.user);
                 localStorage.setItem('user', JSON.stringify(result.user));
                 setNotification({ message: 'Username updated successfully', type: 'success' });
