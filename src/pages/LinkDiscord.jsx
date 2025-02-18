@@ -36,13 +36,18 @@ const LinkDiscord = () => {
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
             <h2 className="text-2xl text-white mb-6">Link Your Discord Account</h2>
             <p className="text-gray-300 mb-4">
-                Linking your Discord account will provide you with a unified experience on ScrapYard.
+                Linking your Discord account will provide you with a unified experience on ScrapYard! Would you like to link your Discord account?
             </p>
             <button
                 onClick={handleLinkDiscord}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded"
             >
                 Link Discord
+            </button>
+            <button onClick={() => navigate('/')} className="mt-4"
+
+            >
+                No Thanks
             </button>
         </div>
     );
