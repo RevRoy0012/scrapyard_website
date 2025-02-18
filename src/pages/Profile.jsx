@@ -9,7 +9,7 @@ const Profile = ({ onLogout }) => {
 
     // Local state
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);         // For initial profile fetch
+    const [loading, setLoading] = useState(true);           // For initial profile fetch
     const [actionLoading, setActionLoading] = useState(false); // For any action (username update, unlink, etc.)
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [editingUsername, setEditingUsername] = useState(false);
@@ -50,7 +50,7 @@ const Profile = ({ onLogout }) => {
         navigate('/login');
     };
 
-    // Change username handler
+    // Handle username update.
     const handleChangeUsername = async () => {
         if (!newUsername.trim()) {
             setNotification({ message: 'New username cannot be empty', type: 'error' });
@@ -59,9 +59,9 @@ const Profile = ({ onLogout }) => {
         setActionLoading(true);
         try {
             const payload = {
-                email: user.email, // Include email here
+                email: user.email, // Provide email from localStorage
                 currentUsername: user.username,
-                newUsername,
+                newUsername: newUsername,
             };
             const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/change-username', {
                 method: 'POST',
@@ -70,6 +70,7 @@ const Profile = ({ onLogout }) => {
             });
             const result = await response.json();
             if (response.ok) {
+                // Update state and localStorage with the new user data
                 setUser(result.user);
                 localStorage.setItem('user', JSON.stringify(result.user));
                 setNotification({ message: 'Username updated successfully', type: 'success' });
@@ -84,7 +85,7 @@ const Profile = ({ onLogout }) => {
         setActionLoading(false);
     };
 
-    // Unlink Discord handler
+    // Handle unlinking Discord.
     const handleUnlinkDiscord = async () => {
         setActionLoading(true);
         try {
@@ -108,7 +109,7 @@ const Profile = ({ onLogout }) => {
         setActionLoading(false);
     };
 
-    // Resend verification email handler
+    // Handle resending verification email.
     const handleResendVerification = async () => {
         setActionLoading(true);
         try {
@@ -143,9 +144,9 @@ const Profile = ({ onLogout }) => {
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6 relative">
-            {/* Fixed notification toast */}
+            {/* Fixed notification toast at top */}
             <Notification message={notification.message} type={notification.type} />
-            {/* Overlay spinner for actions */}
+            {/* Full-screen spinner overlay for actions */}
             {actionLoading && <Spinner />}
             <div className="bg-gray-800 p-6 rounded shadow w-full max-w-md mt-16">
                 <div className="flex items-center justify-between">
@@ -178,12 +179,10 @@ const Profile = ({ onLogout }) => {
                         )}
                     </p>
                     <p className="text-lg mb-2">
-                        <span className="font-semibold">Discord Linked:</span>{' '}
-                        {user.discord_linked ? 'Yes' : 'No'}
+                        <span className="font-semibold">Discord Linked:</span> {user.discord_linked ? 'Yes' : 'No'}
                     </p>
                     <p className="text-lg mb-2">
-                        <span className="font-semibold">Email Verified:</span>{' '}
-                        {user.verified_email ? 'Yes' : 'No'}
+                        <span className="font-semibold">Email Verified:</span> {user.verified_email ? 'Yes' : 'No'}
                     </p>
                 </div>
                 {/* Action Buttons */}
