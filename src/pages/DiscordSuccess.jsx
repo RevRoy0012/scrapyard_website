@@ -1,14 +1,9 @@
 // src/pages/DiscordSuccess.jsx
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const DiscordSuccess = () => {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        // Optionally, you could trigger a profile refresh here if needed.
-        // For example, you could fetch the updated profile and update localStorage.
-    }, []);
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">

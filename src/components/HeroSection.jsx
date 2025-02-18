@@ -1,3 +1,4 @@
+// src/components/HeroSection.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -16,7 +17,8 @@ const HeroSection = () => {
         window.addEventListener('scroll', handleScroll);
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
             setIsAuthenticated(true);
         } else {
             setIsAuthenticated(false);
@@ -85,13 +87,16 @@ const HeroSection = () => {
                                     >
                                         Profile
                                     </Link>
-                                    <Link
-                                        to="/link-discord"
-                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        onClick={() => setDropdownOpen(false)}
-                                    >
-                                        Link Discord
-                                    </Link>
+                                    {/* Only show "Link Discord" if not already linked */}
+                                    {!user.discord_linked && (
+                                        <Link
+                                            to="/link-discord"
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            onClick={() => setDropdownOpen(false)}
+                                        >
+                                            Link Discord
+                                        </Link>
+                                    )}
                                     <button
                                         onClick={handleLogout}
                                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

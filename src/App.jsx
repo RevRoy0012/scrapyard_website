@@ -16,26 +16,35 @@ import SignUp from './pages/SignUp';
 import LinkDiscord from './pages/LinkDiscord';
 import DiscordCallback from './pages/DiscordCallback';
 import Profile from './pages/Profile';
-import discordSuccess from "./pages/DiscordSuccess.jsx";
+import DiscordSuccess from "./pages/DiscordSuccess.jsx";
+
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         window.scrollTo(0, 1);
-        const user = localStorage.getItem('user');
-        if (user) {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
             setLoggedIn(true);
+            setUser(JSON.parse(storedUser));
         } else {
             setLoggedIn(false);
+            setUser(null);
         }
     }, []);
 
     const handleLoginSuccess = () => {
         setLoggedIn(true);
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
     };
 
     const handleLogout = () => {
         setLoggedIn(false);
+        setUser(null);
     };
 
     return (
@@ -78,7 +87,13 @@ function App() {
                 {/* Link Discord Page Route - requires login */}
                 <Route
                     path="/link-discord"
-                    element={loggedIn ? <LinkDiscord /> : <Navigate to="/login" replace />}
+                    element={
+                        loggedIn
+                            ? (user && user.discord_linked
+                                ? <Navigate to="/profile" replace />
+                                : <LinkDiscord />)
+                            : <Navigate to="/login" replace />
+                    }
                 />
 
                 {/* OAuth Callback Route from Discord */}
@@ -90,9 +105,10 @@ function App() {
                     element={loggedIn ? <Profile onLogout={handleLogout} /> : <Navigate to="/login" replace />}
                 />
 
+                {/* Discord Success Page */}
                 <Route
                     path="/discord-success"
-                    element={<discordSuccess />}
+                    element={<DiscordSuccess />}
                 />
 
                 {/* Handle unknown routes */}
