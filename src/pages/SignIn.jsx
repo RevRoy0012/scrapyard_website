@@ -1,5 +1,7 @@
+// src/pages/SignIn.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import Notification from '../components/Notification';
 
 const Login = ({ onLoginSuccess }) => {
     const [email, setEmail] = useState('');
@@ -7,10 +9,10 @@ const Login = ({ onLoginSuccess }) => {
     const [isVerifying, setIsVerifying] = useState(false);
     const [verificationCode, setVerificationCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [notification, setNotification] = useState('');
+    const [notification, setNotification] = useState({ message: '', type: '' });
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    // Helper to store the user data (ensuring an "email" field).
     const storeUser = (result) => {
         const userToStore = result.email ? result : { ...result, email: result.user_email || email };
         localStorage.setItem('user', JSON.stringify(userToStore));
@@ -19,11 +21,11 @@ const Login = ({ onLoginSuccess }) => {
     const handleSignIn = async (e) => {
         e.preventDefault();
         if (!email || !password) {
-            alert('Please enter email and password');
+            setNotification({ message: 'Please enter email and password.', type: 'error' });
             return;
         }
         setIsLoading(true);
-        setNotification('Signing in...');
+        setNotification({ message: 'Signing in...', type: 'info' });
         try {
             const response = await fetch(
                 'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/auth/sign-in',
@@ -37,23 +39,21 @@ const Login = ({ onLoginSuccess }) => {
             if (response.ok) {
                 if (result.requiresVerification) {
                     setIsVerifying(true);
-                    setNotification('Verification required. Check your email.');
+                    setNotification({ message: 'Verification required. Check your email.', type: 'info' });
                 } else {
                     storeUser(result);
                     onLoginSuccess();
-                    setNotification('Login successful!');
+                    setNotification({ message: 'Login successful!', type: 'success' });
                     setTimeout(() => {
                         navigate('/link-discord');
                     }, 1000);
                 }
             } else {
-                alert(result.message || 'Sign in failed.');
-                setNotification('');
+                setNotification({ message: result.message || 'Sign in failed.', type: 'error' });
             }
         } catch (error) {
             console.error('Error signing in', error);
-            alert('An error occurred during sign in.');
-            setNotification('');
+            setNotification({ message: 'An error occurred during sign in.', type: 'error' });
         } finally {
             setIsLoading(false);
         }
@@ -62,11 +62,11 @@ const Login = ({ onLoginSuccess }) => {
     const handleVerify = async (e) => {
         e.preventDefault();
         if (!verificationCode) {
-            alert('Please enter the verification code');
+            setNotification({ message: 'Please enter the verification code.', type: 'error' });
             return;
         }
         setIsLoading(true);
-        setNotification('Verifying...');
+        setNotification({ message: 'Verifying...', type: 'info' });
         try {
             const response = await fetch(
                 'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/sign-in',
@@ -80,26 +80,30 @@ const Login = ({ onLoginSuccess }) => {
             if (response.ok) {
                 storeUser(result);
                 onLoginSuccess();
-                setNotification('Login successful!');
+                setNotification({ message: 'Login successful!', type: 'success' });
                 setTimeout(() => {
                     navigate('/link-discord');
                 }, 1000);
             } else {
-                alert(result.message || 'Verification failed.');
-                setNotification('');
+                setNotification({ message: result.message || 'Verification failed.', type: 'error' });
             }
         } catch (error) {
             console.error('Error verifying sign in', error);
-            alert('An error occurred during verification.');
-            setNotification('');
+            setNotification({ message: 'An error occurred during verification.', type: 'error' });
         } finally {
             setIsLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
             <div className="w-full max-w-md p-8 bg-gray-800 rounded shadow">
+                <button
+                    onClick={() => navigate('/')}
+                    className="mb-4 text-white underline"
+                >
+                    &larr; Back
+                </button>
                 <h2 className="text-2xl text-white mb-6 text-center">Sign In</h2>
                 {!isVerifying ? (
                     <form onSubmit={handleSignIn}>
@@ -111,14 +115,23 @@ const Login = ({ onLoginSuccess }) => {
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            className="w-full p-3 mb-4 rounded bg-gray-700 text-white"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Password"
+                                className="w-full p-3 mb-4 rounded bg-gray-700 text-white"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="absolute right-3 top-3 text-white"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                            >
+                                {showPassword ? 'Hide' : 'Show'}
+                            </button>
+                        </div>
                         <button type="submit" className="w-full bg-red-500 p-3 rounded text-white">
                             {isLoading ? 'Signing in...' : 'Sign In'}
                         </button>
@@ -139,14 +152,7 @@ const Login = ({ onLoginSuccess }) => {
                         </button>
                     </form>
                 )}
-                {notification && (
-                    <div className="mt-4 text-center text-white">
-                        <span>{notification}</span>
-                        {isLoading && (
-                            <div className="inline-block ml-2 border-t-2 border-b-2 border-white animate-spin h-4 w-4"></div>
-                        )}
-                    </div>
-                )}
+                <Notification message={notification.message} type={notification.type} />
                 <p className="mt-4 text-center text-gray-400">
                     Don't have an account?{' '}
                     <Link to="/signup" className="text-red-500">
