@@ -22,7 +22,6 @@ import DiscordSuccess from "./pages/DiscordSuccess.jsx";
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
-    const [loadingUser, setLoadingUser] = useState(true);
 
     useEffect(() => {
         window.scrollTo(0, 1);
@@ -30,7 +29,6 @@ function App() {
         if (storedUser) {
             try {
                 const parsedUser = JSON.parse(storedUser);
-                // Fetch fresh profile data using email query.
                 fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${parsedUser.email}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
@@ -50,10 +48,7 @@ function App() {
                     .finally(() => setLoadingUser(false));
             } catch (error) {
                 console.error("Error parsing stored user:", error);
-                setLoadingUser(false);
             }
-        } else {
-            setLoadingUser(false);
         }
     }, []);
 
