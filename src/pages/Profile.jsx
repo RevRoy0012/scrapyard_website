@@ -16,7 +16,7 @@ const Profile = ({ onLogout }) => {
         const localUser = JSON.parse(storedUser);
 
         // Fetch the up-to-date profile data from the secure endpoint.
-        fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/profile', {
+        fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
