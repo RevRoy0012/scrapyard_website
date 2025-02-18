@@ -18,8 +18,7 @@ const Login = ({ onLoginSuccess }) => {
         localStorage.setItem('user', JSON.stringify(userToStore));
     };
 
-    const handleSignIn = async (e) => {
-        e.preventDefault();
+    const handleSignIn = async () => {
         if (!email || !password) {
             setNotification({ message: 'Please enter email and password.', type: 'error' });
             return;
@@ -59,8 +58,7 @@ const Login = ({ onLoginSuccess }) => {
         }
     };
 
-    const handleVerify = async (e) => {
-        e.preventDefault();
+    const handleVerify = async () => {
         if (!verificationCode) {
             setNotification({ message: 'Please enter the verification code.', type: 'error' });
             return;
@@ -96,17 +94,14 @@ const Login = ({ onLoginSuccess }) => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-4">
             <div className="w-full max-w-md p-8 bg-gray-800 rounded shadow">
-                <button
-                    onClick={() => navigate('/')}
-                    className="mb-4 text-white underline"
-                >
+                <button onClick={() => navigate('/')} className="mb-4 text-white underline">
                     &larr; Back
                 </button>
                 <h2 className="text-2xl text-white mb-6 text-center">Sign In</h2>
                 {!isVerifying ? (
-                    <form onSubmit={handleSignIn}>
+                    <>
                         <input
                             type="email"
                             placeholder="Email"
@@ -132,12 +127,12 @@ const Login = ({ onLoginSuccess }) => {
                                 {showPassword ? 'Hide' : 'Show'}
                             </button>
                         </div>
-                        <button type="submit" className="w-full bg-red-500 p-3 rounded text-white">
+                        <button onClick={handleSignIn} className="w-full bg-red-500 p-3 rounded text-white">
                             {isLoading ? 'Signing in...' : 'Sign In'}
                         </button>
-                    </form>
+                    </>
                 ) : (
-                    <form onSubmit={handleVerify}>
+                    <>
                         <p className="text-white mb-4">Enter the verification code sent to your email</p>
                         <input
                             type="text"
@@ -147,10 +142,10 @@ const Login = ({ onLoginSuccess }) => {
                             onChange={(e) => setVerificationCode(e.target.value)}
                             required
                         />
-                        <button type="submit" className="w-full bg-red-500 p-3 rounded text-white">
+                        <button onClick={handleVerify} className="w-full bg-red-500 p-3 rounded text-white">
                             {isLoading ? 'Verifying...' : 'Verify'}
                         </button>
-                    </form>
+                    </>
                 )}
                 <Notification message={notification.message} type={notification.type} />
                 <p className="mt-4 text-center text-gray-400">

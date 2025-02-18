@@ -13,17 +13,28 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [showPassword, setShowPassword] = useState(false);
+    const [passwordValidation, setPasswordValidation] = useState({
+        length: false,
+        hasNumber: false,
+        hasSpecialChar: false,
+    });
 
-    // Simple password strength check: you can improve this function as needed.
-    const getPasswordStrength = (pwd) => {
-        if (pwd.length < 8) return 'Too Short';
-        let strength = 0;
-        if (/[A-Z]/.test(pwd)) strength++;
-        if (/[a-z]/.test(pwd)) strength++;
-        if (/\d/.test(pwd)) strength++;
-        if (/[@$!%*?&]/.test(pwd)) strength++;
-        if (strength < 3) return 'Weak';
-        if (strength === 3) return 'Moderate';
+    const handlePasswordChange = (value) => {
+        setPassword(value);
+        setPasswordValidation({
+            length: value.length >= 8,
+            hasNumber: /\d/.test(value),
+            hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
+        });
+    };
+
+    const getPasswordStrength = () => {
+        const { length, hasNumber, hasSpecialChar } = passwordValidation;
+        if (!password) return '';
+        if (!length) return 'Too Short';
+        const criteriaMet = [hasNumber, hasSpecialChar].filter(Boolean).length;
+        if (criteriaMet === 0) return 'Weak';
+        if (criteriaMet === 1) return 'Moderate';
         return 'Strong';
     };
 
@@ -92,12 +103,9 @@ const SignUp = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-4">
             <div className="w-full max-w-md p-8 bg-gray-800 rounded shadow">
-                <button
-                    onClick={() => navigate('/')}
-                    className="mb-4 text-white underline"
-                >
+                <button onClick={() => navigate('/')} className="mb-4 text-white underline">
                     &larr; Back
                 </button>
                 <h2 className="text-2xl text-white mb-6 text-center">Sign Up</h2>
@@ -121,14 +129,14 @@ const SignUp = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
-                        {/* Password field with show/hide toggle */}
-                        <div className="relative">
+                        {/* Password field */}
+                        <div className="relative mb-2">
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 placeholder="Password"
-                                className="w-full p-3 mb-2 rounded bg-gray-700 text-white"
+                                className="w-full p-3 rounded bg-gray-700 text-white"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => handlePasswordChange(e.target.value)}
                                 required
                             />
                             <button
@@ -139,10 +147,9 @@ const SignUp = () => {
                                 {showPassword ? 'Hide' : 'Show'}
                             </button>
                         </div>
-                        {/* Password strength indicator */}
                         {password && (
-                            <div className="mb-4 text-sm text-gray-300">
-                                Password Strength: {getPasswordStrength(password)}
+                            <div className="text-sm text-gray-300 mb-4">
+                                Password Strength: <span className="font-semibold">{getPasswordStrength()}</span>
                             </div>
                         )}
                         <button type="submit" className="w-full bg-red-500 p-3 rounded text-white">
