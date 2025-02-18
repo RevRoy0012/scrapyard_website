@@ -55,7 +55,7 @@ const Profile = ({ onLogout }) => {
         }
         setActionLoading(true);
         try {
-            const response = await fetch('https://your-api-url/change-username', {
+            const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/change-username', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: user.email, currentUsername: user.username, newUsername }),
@@ -80,7 +80,7 @@ const Profile = ({ onLogout }) => {
     const handleUnlinkDiscord = async () => {
         setActionLoading(true);
         try {
-            const response = await fetch('https://your-api-url/unlink-discord', {
+            const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/unlink-discord', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: user.email, username: user.username }),
@@ -104,7 +104,7 @@ const Profile = ({ onLogout }) => {
     const handleResendVerification = async () => {
         setActionLoading(true);
         try {
-            const response = await fetch('https://your-api-url/resend-verification-email', {
+            const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/resend-verification-code', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: user.email, username: user.username }),
