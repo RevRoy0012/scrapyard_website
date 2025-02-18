@@ -101,7 +101,7 @@ function App() {
                 {/* Profile Page Route */}
                 <Route
                     path="/profile"
-                    element={loggedIn ? <Profile onLogout={handleLogout} /> : <Navigate to="/login" replace />}
+                    element={loggedIn ? <Profile onLogout={handleLogout} /> : <Navigate to="/" replace />}
                 />
 
                 <Route
