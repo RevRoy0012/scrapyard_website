@@ -18,6 +18,7 @@ import LinkDiscord from './pages/LinkDiscord';
 import DiscordCallback from './pages/DiscordCallback';
 import Profile from './pages/Profile';
 import DiscordSuccess from "./pages/DiscordSuccess.jsx";
+import BugReport from "./pages/BugReport";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -56,9 +57,8 @@ function App() {
         }
     }, []);
 
-    if (loadingUser) {
-        return <Spinner />;
-    }
+    // We no longer block the main page based on loadingUser
+    // Instead, routes that require a user will check accordingly.
 
     return (
         <Router>
@@ -123,6 +123,8 @@ function App() {
                 />
 
                 <Route path="/discord-success" element={<DiscordSuccess />} />
+
+                <Route path="/bug-report" element={<BugReport />} />
 
                 {/* Handle unknown routes */}
                 <Route path="*" element={<div style={{ color: '#fff', padding: '20px' }}>Page Not Found</div>} />
