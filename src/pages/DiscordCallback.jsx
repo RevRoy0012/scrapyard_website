@@ -6,7 +6,7 @@ const DiscordCallback = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // You can also process any parameters here if needed.
+        // Optionally process any query parameters from Discord here.
         const timer = setTimeout(() => {
             navigate('/link-discord');
         }, 3000);

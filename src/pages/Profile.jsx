@@ -4,20 +4,52 @@ import { useNavigate } from 'react-router-dom';
 const Profile = ({ onLogout }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Retrieve the user from localStorage
         const storedUser = localStorage.getItem('user');
         if (!storedUser) {
             navigate('/login');
-        } else {
-            setUser(JSON.parse(storedUser));
+            return;
         }
+        const localUser = JSON.parse(storedUser);
+
+        // Fetch the up-to-date profile data from the secure endpoint.
+        fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/profile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // Assumes you store the JWT token as jwtToken in local storage.
+                'Authorization': `Bearer ${localUser.jwtToken}`
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                // Update the user state with fresh data.
+                setUser(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('Error fetching profile data:', error);
+                // Fall back to local user data if an error occurs.
+                setUser(localUser);
+                setLoading(false);
+            });
     }, [navigate]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-900">
+                <p className="text-white">Loading profile...</p>
+            </div>
+        );
+    }
 
     if (!user) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-900">
-                <p className="text-white">Loading profile...</p>
+                <p className="text-white">No user data available.</p>
             </div>
         );
     }

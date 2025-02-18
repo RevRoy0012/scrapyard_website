@@ -23,7 +23,7 @@ const LinkDiscord = () => {
         );
     }
 
-    // Build the Discord OAuth URL using the SY account email.
+    // Build the Discord OAuth URL using the user's email as state.
     const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
     )}&scope=identify+email&state=${encodeURIComponent(userEmail)}`;
