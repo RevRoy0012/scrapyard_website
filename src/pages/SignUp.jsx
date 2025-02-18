@@ -1,4 +1,3 @@
-// src/pages/SignUp.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Notification from '../components/Notification';
@@ -21,7 +20,6 @@ const SignUp = () => {
         hasSpecialChar: false,
     });
 
-    // Update password and validation state.
     const handlePasswordChange = (value) => {
         setPassword(value);
         setPasswordValidation({

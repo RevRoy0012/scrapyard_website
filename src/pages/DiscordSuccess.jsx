@@ -19,7 +19,6 @@ const DiscordSuccess = () => {
                         headers: { 'Content-Type': 'application/json' },
                     });
                     const data = await response.json();
-                    // Merge the fetched data into the stored user object.
                     const updatedUser = { ...user, ...data };
                     localStorage.setItem('user', JSON.stringify(updatedUser));
                 }

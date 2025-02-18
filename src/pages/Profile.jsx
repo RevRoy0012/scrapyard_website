@@ -7,13 +7,15 @@ import Spinner from '../components/Spinner';
 const Profile = ({ onLogout }) => {
     const navigate = useNavigate();
 
+    // Local state
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);           // Initial profile fetch
-    const [actionLoading, setActionLoading] = useState(false); // For profile actions
+    const [loading, setLoading] = useState(true);           // For initial profile fetch
+    const [actionLoading, setActionLoading] = useState(false); // For any action (username update, unlink, etc.)
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [editingUsername, setEditingUsername] = useState(false);
     const [newUsername, setNewUsername] = useState('');
 
+    // Fetch profile data on mount
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (!storedUser) {
@@ -22,22 +24,22 @@ const Profile = ({ onLogout }) => {
         }
         const localUser = JSON.parse(storedUser);
 
-        // Immediately use local data for a fast render
+        // Immediately use local data for fast render
         setUser(localUser);
 
-        // Then fetch fresh data from the server
+        // Then fetch fresh data from the server using email query.
         fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${localUser.email}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         })
-            .then(res => res.json())
-            .then(data => {
+            .then((res) => res.json())
+            .then((data) => {
                 const updatedUser = { ...localUser, ...data };
                 localStorage.setItem('user', JSON.stringify(updatedUser));
                 setUser(updatedUser);
                 setLoading(false);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error fetching profile data:', error);
                 setLoading(false);
             });
@@ -49,7 +51,7 @@ const Profile = ({ onLogout }) => {
         navigate('/login');
     };
 
-    // Handle username update
+    // Handle username update.
     const handleChangeUsername = async () => {
         if (!newUsername.trim()) {
             setNotification({ message: 'New username cannot be empty', type: 'error' });
@@ -60,7 +62,7 @@ const Profile = ({ onLogout }) => {
             const payload = {
                 email: user.email,
                 currentUsername: user.username,
-                newUsername,
+                newUsername: newUsername,
             };
             const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/change-username', {
                 method: 'POST',
@@ -69,8 +71,9 @@ const Profile = ({ onLogout }) => {
             });
             const result = await response.json();
             if (response.ok) {
-                // Ensure the updated user always has an email field
-                if (!result.user.email) result.user.email = user.email;
+                if (!result.user.email) {
+                    result.user.email = user.email;
+                }
                 setUser(result.user);
                 localStorage.setItem('user', JSON.stringify(result.user));
                 setNotification({ message: 'Username updated successfully', type: 'success' });
@@ -85,7 +88,7 @@ const Profile = ({ onLogout }) => {
         setActionLoading(false);
     };
 
-    // Handle unlinking Discord
+    // Handle unlinking Discord.
     const handleUnlinkDiscord = async () => {
         setActionLoading(true);
         try {
@@ -109,7 +112,7 @@ const Profile = ({ onLogout }) => {
         setActionLoading(false);
     };
 
-    // Handle resending verification email
+    // Handle resending verification email.
     const handleResendVerification = async () => {
         setActionLoading(true);
         try {
@@ -146,7 +149,7 @@ const Profile = ({ onLogout }) => {
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6 relative">
             {/* Fixed notification toast */}
             <Notification message={notification.message} type={notification.type} />
-            {/* Full-page spinner overlay for actions */}
+            {/* Full-screen spinner overlay for actions */}
             {actionLoading && <Spinner />}
             <div className="bg-gray-800 p-6 rounded shadow w-full max-w-md mt-16">
                 <div className="flex items-center justify-between">
@@ -161,7 +164,9 @@ const Profile = ({ onLogout }) => {
                     className="w-24 h-24 rounded-full mx-auto my-4"
                 />
                 <div className="mb-4">
-                    <p className="text-lg"><span className="font-semibold">Email:</span> {user.email}</p>
+                    <p className="text-lg">
+                        <span className="font-semibold">Email:</span> {user.email}
+                    </p>
                     <p className="text-lg">
                         <span className="font-semibold">Username:</span>{' '}
                         {editingUsername ? (
@@ -216,7 +221,7 @@ const Profile = ({ onLogout }) => {
                             </button>
                         </div>
                     )}
-                    {/* Unlink Discord (if linked) */}
+                    {/* Unlink Discord (only if linked) */}
                     {user.discord_linked && (
                         <button
                             onClick={handleUnlinkDiscord}

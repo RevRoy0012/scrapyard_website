@@ -17,12 +17,12 @@ import SignUp from './pages/SignUp';
 import LinkDiscord from './pages/LinkDiscord';
 import DiscordCallback from './pages/DiscordCallback';
 import Profile from './pages/Profile';
-import DiscordSuccess from './pages/DiscordSuccess.jsx';
+import DiscordSuccess from "./pages/DiscordSuccess.jsx";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
-    const [loadingUser, setLoadingUser] = useState(true); // Loading state for fetching user data
+    const [loadingUser, setLoadingUser] = useState(true);
 
     useEffect(() => {
         window.scrollTo(0, 1);
@@ -30,19 +30,19 @@ function App() {
         if (storedUser) {
             try {
                 const parsedUser = JSON.parse(storedUser);
-                // Fetch fresh user data using email query parameter.
+                // Fetch fresh profile data using email query.
                 fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${parsedUser.email}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 })
-                    .then(res => res.json())
-                    .then(data => {
+                    .then((res) => res.json())
+                    .then((data) => {
                         const updatedUser = { ...parsedUser, ...data };
                         localStorage.setItem('user', JSON.stringify(updatedUser));
                         setUser(updatedUser);
                         setLoggedIn(true);
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.error("Error fetching fresh user data:", error);
                         setUser(parsedUser);
                         setLoggedIn(true);

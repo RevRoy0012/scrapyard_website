@@ -17,14 +17,18 @@ const LinkDiscord = () => {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
         setChecking(false);
-        // If user is already linked, redirect to profile.
+        // If the user is already linked, redirect to profile.
         if (parsedUser.discord_linked) {
             navigate('/profile');
         }
     }, [navigate]);
 
     if (checking) {
-        return <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white"><p>Loading...</p></div>;
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+                <p>Loading...</p>
+            </div>
+        );
     }
 
     if (!user || !(user.email || user.user_email)) {
@@ -43,7 +47,6 @@ const LinkDiscord = () => {
         );
     }
 
-    // Build the Discord OAuth URL using the user's email as state.
     const userEmail = user.email || user.user_email;
     const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
