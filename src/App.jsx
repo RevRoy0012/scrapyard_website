@@ -22,6 +22,7 @@ import DiscordSuccess from "./pages/DiscordSuccess.jsx";
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
+    const [loadingUser, setLoadingUser] = useState(true);
 
     useEffect(() => {
         window.scrollTo(0, 1);
@@ -48,7 +49,10 @@ function App() {
                     .finally(() => setLoadingUser(false));
             } catch (error) {
                 console.error("Error parsing stored user:", error);
+                setLoadingUser(false);
             }
+        } else {
+            setLoadingUser(false);
         }
     }, []);
 
