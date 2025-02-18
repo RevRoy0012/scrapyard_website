@@ -31,7 +31,7 @@ const HeroSection = () => {
         setUser(null);
         setIsAuthenticated(false);
         setDropdownOpen(false);
-        navigate('/login');
+        navigate('/');
     };
 
     const toggleDropdown = () => {
