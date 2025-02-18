@@ -3,21 +3,16 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const SignUp = () => {
     const navigate = useNavigate();
-
-    // Form state
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
-    // Verification state
     const [isVerifying, setIsVerifying] = useState(false);
     const [verificationCode, setVerificationCode] = useState('');
-
     const [isLoading, setIsLoading] = useState(false);
     const [notification, setNotification] = useState('');
 
     const storeUser = (result) => {
-        const userToStore = result.email ? result : { ...result, email: email };
+        const userToStore = result.email ? result : { ...result, email };
         localStorage.setItem('user', JSON.stringify(userToStore));
     };
 
@@ -61,7 +56,7 @@ const SignUp = () => {
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, auth_code: verificationCode }),
+                    body: JSON.stringify({ email, auth_code: verificationCode, username }),
                 }
             );
             const result = await response.json();

@@ -10,9 +10,8 @@ const Login = ({ onLoginSuccess }) => {
     const [notification, setNotification] = useState('');
     const navigate = useNavigate();
 
-    // Helper to store the user so it always has an "email" field.
+    // Helper to store user info ensuring an "email" field.
     const storeUser = (result) => {
-        // If result doesn't have "email" but has "user_email", use that.
         const userToStore = result.email ? result : { ...result, email: result.user_email || email };
         localStorage.setItem('user', JSON.stringify(userToStore));
     };

@@ -1,4 +1,3 @@
-// src/pages/Profile.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,7 +23,7 @@ const Profile = ({ onLogout }) => {
     }
 
     const handleLogout = () => {
-        localStorage.removeItem('user'); // clear the user data
+        localStorage.removeItem('user');
         if (onLogout) {
             onLogout();
         }
@@ -41,6 +40,9 @@ const Profile = ({ onLogout }) => {
             />
             <p className="text-lg mb-2">Email: {user.email}</p>
             <p className="text-lg mb-2">Username: {user.username || 'N/A'}</p>
+            <p className="text-lg mb-2">
+                Discord Linked: {user.discord_linked ? 'Yes' : 'No'}
+            </p>
             <button
                 onClick={handleLogout}
                 className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
