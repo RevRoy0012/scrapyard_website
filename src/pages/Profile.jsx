@@ -6,16 +6,13 @@ import Spinner from '../components/Spinner';
 
 const Profile = ({ onLogout }) => {
     const navigate = useNavigate();
-
-    // Local state
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);           // For initial profile fetch
-    const [actionLoading, setActionLoading] = useState(false); // For any action (username update, unlink, etc.)
+    const [loading, setLoading] = useState(true);
+    const [actionLoading, setActionLoading] = useState(false);
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [editingUsername, setEditingUsername] = useState(false);
     const [newUsername, setNewUsername] = useState('');
 
-    // Fetch profile data on mount
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         if (!storedUser) {
@@ -23,11 +20,9 @@ const Profile = ({ onLogout }) => {
             return;
         }
         const localUser = JSON.parse(storedUser);
-
-        // Immediately use local data for fast render
         setUser(localUser);
 
-        // Then fetch fresh data from the server using email query.
+        // Fetch fresh profile data from the server
         fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${localUser.email}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -47,11 +42,10 @@ const Profile = ({ onLogout }) => {
 
     const handleLogout = () => {
         localStorage.removeItem('user');
-        onLogout && onLogout();
+        if (onLogout) onLogout();
         navigate('/login');
     };
 
-    // Handle username update.
     const handleChangeUsername = async () => {
         if (!newUsername.trim()) {
             setNotification({ message: 'New username cannot be empty', type: 'error' });
@@ -88,7 +82,6 @@ const Profile = ({ onLogout }) => {
         setActionLoading(false);
     };
 
-    // Handle unlinking Discord.
     const handleUnlinkDiscord = async () => {
         setActionLoading(true);
         try {
@@ -112,7 +105,6 @@ const Profile = ({ onLogout }) => {
         setActionLoading(false);
     };
 
-    // Handle resending verification email.
     const handleResendVerification = async () => {
         setActionLoading(true);
         try {
@@ -145,57 +137,83 @@ const Profile = ({ onLogout }) => {
         );
     }
 
+    // Format Credits (e.g., "$1,234,567")
+    const formattedCredits = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+    }).format(user.Credits);
+
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6 relative">
-            {/* Fixed notification toast */}
+            {/* Notification Toast */}
             <Notification message={notification.message} type={notification.type} />
-            {/* Full-screen spinner overlay for actions */}
+            {/* Action Spinner Overlay */}
             {actionLoading && <Spinner />}
-            <div className="bg-gray-800 p-6 rounded shadow w-full max-w-md mt-16">
-                <div className="flex items-center justify-between">
+            <div className="bg-gray-800 p-8 rounded shadow w-full max-w-md mt-16">
+                <div className="flex items-center justify-between mb-6">
                     <h2 className="text-3xl font-bold">Your Profile</h2>
                     <button onClick={handleLogout} className="text-red-400 hover:text-red-600">
                         Logout
                     </button>
                 </div>
-                <img
-                    src={user.profilePicture || '/default-profile.png'}
-                    alt="Profile"
-                    className="w-24 h-24 rounded-full mx-auto my-4"
-                />
-                <div className="mb-4">
-                    <p className="text-lg">
-                        <span className="font-semibold">Email:</span> {user.email}
-                    </p>
-                    <p className="text-lg">
-                        <span className="font-semibold">Username:</span>{' '}
-                        {editingUsername ? (
-                            <input
-                                type="text"
-                                value={newUsername}
-                                onChange={(e) => setNewUsername(e.target.value)}
-                                className="p-1 rounded bg-gray-700 text-white"
-                                placeholder="New Username"
-                            />
-                        ) : (
-                            user.username
-                        )}
-                    </p>
-                    <p className="text-lg mb-2">
-                        <span className="font-semibold">Discord Linked:</span> {user.discord_linked ? 'Yes' : 'No'}
-                    </p>
-                    <p className="text-lg mb-2">
-                        <span className="font-semibold">Email Verified:</span> {user.verified_email ? 'Yes' : 'No'}
-                    </p>
+                {/* Generic Avatar */}
+                <div className="flex justify-center mb-6">
+                    <img
+                        src="/default-profile.png"
+                        alt="Profile"
+                        className="w-24 h-24 rounded-full"
+                    />
+                </div>
+                <div className="space-y-4">
+                    <div>
+                        <p className="text-lg">
+                            <span className="font-semibold">Email:</span> {user.email}
+                        </p>
+                    </div>
+                    <div>
+                        <p className="text-lg">
+                            <span className="font-semibold">Username:</span>{' '}
+                            {editingUsername ? (
+                                <input
+                                    type="text"
+                                    value={newUsername}
+                                    onChange={(e) => setNewUsername(e.target.value)}
+                                    className="p-1 rounded bg-gray-700 text-white"
+                                    placeholder="New Username"
+                                />
+                            ) : (
+                                user.username || 'N/A'
+                            )}
+                        </p>
+                    </div>
+                    {user.Credits !== undefined && (
+                        <div>
+                            <p className="text-lg">
+                                <span className="font-semibold">Credits:</span> {formattedCredits}
+                            </p>
+                        </div>
+                    )}
+                    <div>
+                        <p className="text-lg">
+                            <span className="font-semibold">Discord Linked:</span>{' '}
+                            {user.discord_id ? 'Yes' : 'No'}
+                        </p>
+                    </div>
+                    <div>
+                        <p className="text-lg">
+                            <span className="font-semibold">Email Verified:</span>{' '}
+                            {user.verified_email ? 'Yes' : 'No'}
+                        </p>
+                    </div>
                 </div>
                 {/* Action Buttons */}
-                <div className="space-y-3">
-                    {/* Change Username */}
+                <div className="mt-8 space-y-3">
                     {!editingUsername && (
                         <button
                             onClick={() => {
                                 setEditingUsername(true);
-                                setNewUsername(user.username);
+                                setNewUsername(user.username || '');
                             }}
                             className="w-full bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded"
                         >
@@ -221,8 +239,7 @@ const Profile = ({ onLogout }) => {
                             </button>
                         </div>
                     )}
-                    {/* Unlink Discord (only if linked) */}
-                    {user.discord_linked && (
+                    {user.discord_id && (
                         <button
                             onClick={handleUnlinkDiscord}
                             className="w-full bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded"
@@ -230,7 +247,6 @@ const Profile = ({ onLogout }) => {
                             Unlink Discord
                         </button>
                     )}
-                    {/* Verify Email (if not verified) */}
                     {!user.verified_email && (
                         <button
                             onClick={handleResendVerification}
