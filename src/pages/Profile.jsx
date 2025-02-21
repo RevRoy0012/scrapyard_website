@@ -197,8 +197,7 @@ const Profile = ({ onLogout }) => {
                     <div>
                         <p className="text-lg">
                             <span className="font-semibold">Discord Linked:</span>{' '}
-                            {user.discord_id ? 'Yes' : 'No'}
-                        </p>
+                            {user.discord_id || user.discord_linked ? 'Yes' : 'No'}                        </p>
                     </div>
                     <div>
                         <p className="text-lg">
