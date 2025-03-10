@@ -22,7 +22,7 @@ const Profile = ({ onLogout }) => {
         const localUser = JSON.parse(storedUser);
         setUser(localUser);
 
-        // Fetch fresh profile data from the server
+        // Fetch fresh profile data from the server using the email query.
         fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${localUser.email}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -65,9 +65,8 @@ const Profile = ({ onLogout }) => {
             });
             const result = await response.json();
             if (response.ok) {
-                if (!result.user.email) {
-                    result.user.email = user.email;
-                }
+                // Ensure email is retained if not returned.
+                if (!result.user.email) result.user.email = user.email;
                 setUser(result.user);
                 localStorage.setItem('user', JSON.stringify(result.user));
                 setNotification({ message: 'Username updated successfully', type: 'success' });
@@ -157,7 +156,6 @@ const Profile = ({ onLogout }) => {
                         Logout
                     </button>
                 </div>
-                {/* Generic Avatar */}
                 <div className="flex justify-center mb-6">
                     <img
                         src="/default-profile.png"
@@ -197,7 +195,17 @@ const Profile = ({ onLogout }) => {
                     <div>
                         <p className="text-lg">
                             <span className="font-semibold">Discord Linked:</span>{' '}
-                            {user.discord_id || user.discord_linked ? 'Yes' : 'No'}                        </p>
+                            {user.discord_id || user.discord_linked ? 'Yes' : 'No'}
+                        </p>
+                        {/* Show Link Discord button if not linked */}
+                        {!(user.discord_id || user.discord_linked) && (
+                            <button
+                                onClick={() => navigate('/link-discord')}
+                                className="mt-2 w-full bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded"
+                            >
+                                Link Discord
+                            </button>
+                        )}
                     </div>
                     <div>
                         <p className="text-lg">
@@ -206,7 +214,6 @@ const Profile = ({ onLogout }) => {
                         </p>
                     </div>
                 </div>
-                {/* Action Buttons */}
                 <div className="mt-8 space-y-3">
                     {!editingUsername && (
                         <button
@@ -238,14 +245,14 @@ const Profile = ({ onLogout }) => {
                             </button>
                         </div>
                     )}
-                    {user.discord_id && (
+                    {user.discord_id || user.discord_linked ? (
                         <button
                             onClick={handleUnlinkDiscord}
                             className="w-full bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded"
                         >
                             Unlink Discord
                         </button>
-                    )}
+                    ) : null}
                     {!user.verified_email && (
                         <button
                             onClick={handleResendVerification}

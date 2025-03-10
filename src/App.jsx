@@ -1,8 +1,8 @@
 // src/App.js
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import 'animate.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Spinner from './components/Spinner';
 
 import HeroSection from './components/HeroSection';
 import WhoWeAre from './components/WhoWeAre';

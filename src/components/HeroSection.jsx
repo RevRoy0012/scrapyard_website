@@ -87,7 +87,6 @@ const HeroSection = () => {
                                     >
                                         Profile
                                     </Link>
-                                    {/* Only show "Link Discord" if not already linked */}
                                     {!user.discord_linked && (
                                         <Link
                                             to="/link-discord"
@@ -122,6 +121,7 @@ const HeroSection = () => {
                     Join us for the best car community experience
                 </p>
                 <div className="flex justify-center mt-8 space-x-6 animate__animated animate__fadeIn animate__delay-2s">
+                    {/* Discord */}
                     <a
                         href="https://discord.gg/xmy9vnNEZn"
                         target="_blank"
@@ -130,13 +130,50 @@ const HeroSection = () => {
                     >
                         <i className="fab fa-discord text-3xl"></i>
                     </a>
+                    {/* YouTube */}
                     <a
-                        href="https://www.instagram.com/sy_ir_team/"
+                        href="https://www.youtube.com/channel/@scrapyardgg"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white bg-transparent border-2 border-white p-6 rounded-full transform transition-transform duration-300 hover:scale-110"
+                    >
+                        <i className="fab fa-youtube text-3xl"></i>
+                    </a>
+                    {/* Instagram */}
+                    <a
+                        href="https://www.instagram.com/scrapyardgg/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-white bg-transparent border-2 border-white p-6 rounded-full transform transition-transform duration-300 hover:scale-110"
                     >
                         <i className="fab fa-instagram text-3xl"></i>
+                    </a>
+                    {/* X / Twitter */}
+                    <a
+                        href="https://x.com/gg_scrapyard"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white bg-transparent border-2 border-white p-6 rounded-full transform transition-transform duration-300 hover:scale-110"
+                    >
+                        <i className="fab fa-twitter text-3xl"></i>
+                    </a>
+                    {/* TikTok */}
+                    <a
+                        href="https://www.tiktok.com/@scrapyard.gg"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white bg-transparent border-2 border-white p-6 rounded-full transform transition-transform duration-300 hover:scale-110"
+                    >
+                        <i className="fab fa-tiktok text-3xl"></i>
+                    </a>
+                    {/* Twitch */}
+                    <a
+                        href="https://www.twitch.tv/scrapyard_gg"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white bg-transparent border-2 border-white p-6 rounded-full transform transition-transform duration-300 hover:scale-110"
+                    >
+                        <i className="fab fa-twitch text-3xl"></i>
                     </a>
                 </div>
             </div>
