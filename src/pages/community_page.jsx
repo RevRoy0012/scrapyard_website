@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import Community_events_component from '../components/community_events_component.jsx';
 import Community_blog_post_component from '../components/community_blog_post_component.jsx';
