@@ -7,7 +7,7 @@ import Main_hero_component from './components/main_hero_component.jsx';
 import Main_who_we_are_component from './components/main_who_we_are_component.jsx';
 import Main_why_join_scrapyard_component from "./components/Main_why_join_scrapyard_component.jsx";
 import Main_how_it_works_component from './components/main_how_it_works_component.jsx';
-import Main_live_stats_component from './components/Main_live_stats_component.jsx';
+import Main_live_stats_component from './components/main_live_stats_component.jsx';
 import Main_final_cta_component from "./components/main_final_cta_component.jsx";
 import Global_navigation_component from './components/global_navigation_component.jsx';
 import Global_progress_bar_component from './components/global_progress_bar_component.jsx';
