@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { Suspense } from 'react';
@@ -5,7 +6,7 @@ import { Suspense } from 'react';
 // Components
 import Main_hero_component from './components/main_hero_component.jsx';
 import Main_who_we_are_component from './components/main_who_we_are_component.jsx';
-import Main_why_join_scrapyard_component from "./components/Main_why_join_scrapyard_component.jsx";
+import Main_why_join_scrapyard_component from "./components/main_why_join_scrapyard_component.jsx";
 import Main_how_it_works_component from './components/main_how_it_works_component.jsx';
 import Main_live_stats_component from './components/main_live_stats_component.jsx';
 import Main_final_cta_component from "./components/main_final_cta_component.jsx";
