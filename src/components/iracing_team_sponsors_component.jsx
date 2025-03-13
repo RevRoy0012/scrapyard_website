@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// Sponsor Data
 const sponsors = [
     {
         name: 'nixianearts',
@@ -21,16 +20,15 @@ const sponsors = [
 
 const scrapyardLogo = 'https://scrapyard.gg/sy_logo.png';
 
-// Styles as JavaScript Objects
 const styles = {
     sponsorsSection: {
-        backgroundColor: '#000', // Black background
-        color: '#fff', // White text
+        backgroundColor: '#000',
+        color: '#fff',
         padding: '50px 20px',
         textAlign: 'center',
     },
     sponsorsTitle: {
-        color: '#e10600', // Red color for the title
+        color: '#e10600',
         fontSize: '2.5em',
         marginBottom: '40px',
     },
@@ -38,12 +36,12 @@ const styles = {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        alignItems: 'flex-start', // Ensures independent height
+        alignItems: 'flex-start',
         gap: '30px',
     },
     sponsorCard: {
-        backgroundColor: '#1a1a1a', // Slightly lighter black for cards
-        border: '2px solid #e10600', // Red border
+        backgroundColor: '#1a1a1a',
+        border: '2px solid #e10600',
         borderRadius: '10px',
         padding: '20px',
         width: '200px',
@@ -58,7 +56,7 @@ const styles = {
         maxWidth: '100%',
         height: 'auto',
         marginBottom: '15px',
-        objectFit: 'contain', // Ensures the image scales nicely
+        objectFit: 'contain',
     },
     sponsorName: {
         fontSize: '1.2em',
@@ -106,8 +104,7 @@ const styles = {
     },
 };
 
-// Sponsors Component
-const Sponsors = () => {
+const Iracing_team_sponsors_component = () => {
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [popupVisible, setPopupVisible] = useState(false);
     const [selectedSponsor, setSelectedSponsor] = useState(null);
@@ -188,4 +185,4 @@ const Sponsors = () => {
     );
 };
 
-export default Sponsors;
+export default Iracing_team_sponsors_component;

@@ -1,10 +1,9 @@
-// src/pages/BugReport.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Notification from '../components/Notification';
-import Spinner from '../components/Spinner';
+import Global_notification_component from '../components/Global_notification_component.jsx';
+import Global_throbber_component from '../components/Global_throbber_component.jsx';
 
-const BugReport = () => {
+const Bug_report_page = () => {
     const navigate = useNavigate();
     const [briefDescription, setBriefDescription] = useState('');
     const [stepsToReproduce, setStepsToReproduce] = useState('');
@@ -18,7 +17,6 @@ const BugReport = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate required fields.
         if (!briefDescription || !stepsToReproduce || !expectedBehavior || !actualBehavior || !deviceInfo) {
             setNotification({ message: 'Please fill out all required fields.', type: 'error' });
             return;
@@ -27,7 +25,6 @@ const BugReport = () => {
         setIsLoading(true);
         setNotification({ message: 'Submitting bug report...', type: 'info' });
 
-        // Build ticket text following the specified format.
         const ticketText = `
 ${briefDescription.trim()}
 
@@ -56,14 +53,12 @@ ${additionalNotes.trim()}
             const result = await response.json();
             if (response.ok) {
                 setNotification({ message: 'Bug report submitted successfully!', type: 'success' });
-                // Clear the form if desired.
                 setBriefDescription('');
                 setStepsToReproduce('');
                 setExpectedBehavior('');
                 setActualBehavior('');
                 setDeviceInfo('');
                 setAdditionalNotes('');
-                // Navigate to a confirmation page or back to profile.
                 setTimeout(() => {
                     navigate('/profile');
                 }, 1500);
@@ -79,7 +74,7 @@ ${additionalNotes.trim()}
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6">
-            {isLoading && <Spinner />}
+            {isLoading && <Global_throbber_component />}
             <div className="w-full max-w-2xl bg-gray-800 p-8 rounded shadow">
                 <h2 className="text-3xl font-bold mb-6 text-center">Submit a Bug Report</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -152,9 +147,9 @@ ${additionalNotes.trim()}
                     </button>
                 </form>
             </div>
-            <Notification message={notification.message} type={notification.type} />
+            <Global_notification_component message={notification.message} type={notification.type} />
         </div>
     );
 };
 
-export default BugReport;
+export default Bug_report_page;

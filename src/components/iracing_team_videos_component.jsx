@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const VideosSection = () => {
+const Iracing_team_videos_component = () => {
     const [focusedVideo, setFocusedVideo] = useState(null);
 
     const handlePlay = (index) => {
@@ -27,7 +27,7 @@ const VideosSection = () => {
                             key={index}
                             className={`p-4 rounded-lg transform transition-all duration-300 ${
                                 focusedVideo === index
-                                    ? 'bg-red-600 scale-105 z-10 shadow-xl' // Focused style
+                                    ? 'bg-red-600 scale-105 z-10 shadow-xl' 
                                     : 'bg-black bg-opacity-80'
                             }`}
                         >
@@ -48,4 +48,4 @@ const VideosSection = () => {
     );
 };
 
-export default VideosSection;
+export default Iracing_team_videos_component;

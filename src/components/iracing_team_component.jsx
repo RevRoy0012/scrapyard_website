@@ -1,6 +1,6 @@
 import React from 'react';
 
-const OurTeam = () => {
+const Iracing_team_component = () => {
     const teamMembers = [
         { name: 'Jordan', role: 'Team Lead', image: '/weewoo_pfp.png' },
         { name: 'Aaron', role: 'Driver', image: '/ben_pfp.png' },
@@ -34,4 +34,4 @@ const OurTeam = () => {
     );
 };
 
-export default OurTeam;
+export default Iracing_team_component;

@@ -1,9 +1,8 @@
-// src/pages/LinkDiscord.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Spinner from '../components/Spinner';
+import Global_throbber_component from '../components/global_throbber_component.jsx';
 
-const LinkDiscord = () => {
+const Link_discord_page = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [checking, setChecking] = useState(true);
@@ -16,7 +15,6 @@ const LinkDiscord = () => {
                 headers: { 'Content-Type': 'application/json' },
             });
             const data = await response.json();
-            // Merge the fresh data into the stored user object.
             const updatedUser = { ...storedUser, ...data };
             localStorage.setItem('user', JSON.stringify(updatedUser));
             return updatedUser;
@@ -34,12 +32,10 @@ const LinkDiscord = () => {
                 setChecking(false);
                 return;
             }
-            // Parse local storage and then fetch fresh data.
             const parsedUser = JSON.parse(storedUser);
             const freshUser = await fetchUserData(parsedUser);
             setUser(freshUser);
             setChecking(false);
-            // If Discord is already linked, redirect to profile.
             if (freshUser.discord_linked) {
                 navigate('/profile');
             }
@@ -51,7 +47,7 @@ const LinkDiscord = () => {
     if (checking) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-                <Spinner />
+                <Global_throbber_component />
             </div>
         );
     }
@@ -72,7 +68,6 @@ const LinkDiscord = () => {
         );
     }
 
-    // Build the Discord OAuth URL using the user's email as state.
     const userEmail = user.email || user.user_email;
     const discordOAuthUrl = `https://discord.com/oauth2/authorize?client_id=1312377564005666879&response_type=code&redirect_uri=${encodeURIComponent(
         'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/discord-link'
@@ -104,4 +99,4 @@ const LinkDiscord = () => {
     );
 };
 
-export default LinkDiscord;
+export default Link_discord_page;

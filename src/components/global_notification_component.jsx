@@ -1,7 +1,6 @@
-// src/components/Notification.jsx
 import React, { useEffect, useState } from 'react';
 
-const Notification = ({ message, type, duration = 3000 }) => {
+const Global_notification_component = ({ message, type, duration = 3000 }) => {
     const [visible, setVisible] = useState(!!message);
 
     useEffect(() => {
@@ -44,4 +43,4 @@ const Notification = ({ message, type, duration = 3000 }) => {
     );
 };
 
-export default Notification;
+export default Global_notification_component;

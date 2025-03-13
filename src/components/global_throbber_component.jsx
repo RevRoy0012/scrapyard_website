@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Spinner = () => {
+const Global_throbber_component = () => {
     return (
         <div style={{
             position: 'fixed',
@@ -29,4 +29,4 @@ const Spinner = () => {
     );
 };
 
-export default Spinner;
+export default Global_throbber_component;

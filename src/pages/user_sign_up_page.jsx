@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import Notification from '../components/Notification';
-import Spinner from '../components/Spinner';
+import Global_notification_component from '../components/global_notification_component.jsx';
+import Global_throbber_component from '../components/global_throbber_component.jsx';
 
-const SignUp = () => {
+const User_sign_up_page = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -111,7 +111,7 @@ const SignUp = () => {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-4">
-            {isLoading && <Spinner />}
+            {isLoading && <Global_throbber_component />}
             <div className="w-full max-w-md p-8 bg-gray-800 rounded shadow relative">
                 <button onClick={() => navigate('/')} className="mb-4 text-white underline absolute top-4 left-4">
                     &larr; Back
@@ -190,7 +190,7 @@ const SignUp = () => {
                         </button>
                     </form>
                 )}
-                <Notification message={notification.message} type={notification.type} />
+                <Global_notification_component message={notification.message} type={notification.type} />
                 <p className="mt-4 text-center text-gray-400">
                     Already have an account?{' '}
                     <Link to="/login" className="text-red-500">
@@ -202,4 +202,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default User_sign_up_page;

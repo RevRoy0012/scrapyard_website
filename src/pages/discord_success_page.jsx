@@ -1,9 +1,8 @@
-// src/pages/DiscordSuccess.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Spinner from '../components/Spinner';
+import Global_throbber_component from '../components/global_throbber_component.jsx';
 
-const DiscordSuccess = () => {
+const Discord_success_page = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
@@ -13,7 +12,6 @@ const DiscordSuccess = () => {
                 const storedUser = localStorage.getItem('user');
                 if (storedUser) {
                     const user = JSON.parse(storedUser);
-                    // Fetch updated profile data using the email query parameter.
                     const response = await fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${user.email}`, {
                         method: 'GET',
                         headers: { 'Content-Type': 'application/json' },
@@ -33,7 +31,7 @@ const DiscordSuccess = () => {
     }, []);
 
     if (loading) {
-        return <Spinner />;
+        return <Global_throbber_component />;
     }
 
     return (
@@ -56,4 +54,4 @@ const DiscordSuccess = () => {
     );
 };
 
-export default DiscordSuccess;
+export default Discord_success_page;

@@ -1,10 +1,10 @@
-// src/pages/Profile.jsx
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Notification from '../components/Notification';
-import Spinner from '../components/Spinner';
+import Global_notification_component from '../components/global_notification_component.jsx';
+import Global_throbber_component from "../components/global_throbber_component.jsx";
 
-const Profile = ({ onLogout }) => {
+const User_profile_page = ({ onLogout }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -22,7 +22,6 @@ const Profile = ({ onLogout }) => {
         const localUser = JSON.parse(storedUser);
         setUser(localUser);
 
-        // Fetch fresh profile data from the server using the email query.
         fetch(`https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/profile?email=${localUser.email}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -65,7 +64,6 @@ const Profile = ({ onLogout }) => {
             });
             const result = await response.json();
             if (response.ok) {
-                // Ensure email is retained if not returned.
                 if (!result.user.email) result.user.email = user.email;
                 setUser(result.user);
                 localStorage.setItem('user', JSON.stringify(result.user));
@@ -126,7 +124,7 @@ const Profile = ({ onLogout }) => {
     };
 
     if (loading) {
-        return <Spinner />;
+        return <Global_throbber_component />;
     }
     if (!user) {
         return (
@@ -146,9 +144,9 @@ const Profile = ({ onLogout }) => {
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6 relative">
             {/* Notification Toast */}
-            <Notification message={notification.message} type={notification.type} />
+            <Global_notification_component message={notification.message} type={notification.type} />
             {/* Action Spinner Overlay */}
-            {actionLoading && <Spinner />}
+            {actionLoading && <Global_throbber_component />}
             <div className="bg-gray-800 p-8 rounded shadow w-full max-w-md mt-16">
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-3xl font-bold">Your Profile</h2>
@@ -261,16 +259,10 @@ const Profile = ({ onLogout }) => {
                             Verify Email
                         </button>
                     )}
-                    <button
-                        onClick={() => navigate('/')}
-                        className="w-full bg-red-500 hover:bg-red-600 px-4 py-2 rounded"
-                    >
-                        Go Home
-                    </button>
                 </div>
             </div>
         </div>
     );
 };
 
-export default Profile;
+export default User_profile_page;
