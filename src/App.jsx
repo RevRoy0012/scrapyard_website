@@ -61,7 +61,7 @@ function App() {
                         <Route
                             path="/"
                             element={
-                                <div className="bg-black text-white">
+                                <div>
                                     <Main_hero_component />
                                     <Main_who_we_are_component />
                                     <Main_why_join_scrapyard_component />

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 
 const Community_events_component = () => {
@@ -11,7 +12,7 @@ const Community_events_component = () => {
             try {
                 const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/event');
                 if (!response.ok) {
-                    throw new Error('Failed to fetch events');
+                    new Error('Failed to fetch events');
                 }
                 const data = await response.json();
                 setEvents(data.events);
@@ -89,12 +90,12 @@ const Community_events_component = () => {
     );
 
     return (
-        <div className="bg-cover bg-center min-h-screen py-12" style={{ backgroundImage: 'url(/medium.png)' }}>
+        <div className="bg-gray-900 bg-center min-h-screen py-12">
             <div className="max-w-7xl mx-auto">
                 {/* Skeletons while loading */}
                 {loading ? (
                     <>
-                        <h1 className="text-3xl font-bold text-center text-yellow-500 mb-6">Events Happening Now</h1>
+                        <h1 className="text-4xl font-extrabold text-center text-yellow-500 mb-10">Events Happening Now</h1>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                             {Array.from({ length: 3 }).map((_, index) => <SkeletonEvent key={index} />)}
                         </div>
@@ -109,7 +110,7 @@ const Community_events_component = () => {
                                 <h1 className="text-3xl font-bold text-center text-yellow-500 mb-6">Events Happening Now</h1>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                                     {liveEvents.map((event) => (
-                                        <div key={event.id} className="relative p-6 rounded-lg shadow-lg bg-black bg-opacity-60">
+                                        <div key={event.id} className="relative p-6 rounded-lg shadow-lg bg-gray-800 bg-opacity-60">
                                             <div className="absolute bottom-2 right-2 bg-red-600 text-white text-sm font-bold py-1 px-3 rounded-full shadow-md">
                                                 LIVE
                                             </div>
@@ -123,21 +124,22 @@ const Community_events_component = () => {
                             </div>
                         )}
 
+
+                        {/* Upcoming Events */}
+                        <h1 className="text-4xl font-extrabold text-center text-red-500 mb-10">Upcoming Events</h1>
+
                         {/* Countdown Timer */}
                         {countdown && (
-                            <div className="bg-black bg-opacity-60 text-white p-6 rounded-lg shadow-lg mb-8">
+                            <div className="bg-gray-800 bg-opacity-60 text-white p-6 rounded-lg shadow-lg mb-8">
                                 <p className="text-center text-2xl font-semibold text-red-500">Next Event Starts In:</p>
                                 <p className="text-center text-xl text-white mt-2">{countdown}</p>
                             </div>
                         )}
 
-                        {/* Upcoming Events */}
-                        <h1 className="text-4xl font-extrabold text-center text-red-500 mb-10">Upcoming Events</h1>
-
                         {upcomingEvents.length > 0 ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {upcomingEvents.map((event) => (
-                                    <div key={event.id} className="p-6 rounded-lg shadow-lg bg-black bg-opacity-60">
+                                    <div key={event.id} className="p-6 rounded-lg shadow-lg bg-gray-800 bg-opacity-60">
                                         <h2 className="text-2xl font-semibold text-red-500 mb-3">{event.title}</h2>
                                         <p className="text-gray-200">{event.content}</p>
                                         <p className="text-gray-200">Start: {formatDateTime(event.date_start)}</p>
@@ -146,7 +148,7 @@ const Community_events_component = () => {
                                 ))}
                             </div>
                         ) : (
-                            <div className="bg-black bg-opacity-60 text-white p-6 rounded-lg shadow-lg flex justify-center items-center h-56">
+                            <div className="bg-gray-800 bg-opacity-60 text-white p-6 rounded-lg shadow-lg flex justify-center items-center h-56">
                                 <div className="text-center">
                                     <p className="text-2xl font-semibold text-red-500">No upcoming events planned</p>
                                     <p className="text-lg text-gray-200 mt-2">Check back later for new events!</p>

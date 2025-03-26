@@ -90,7 +90,7 @@ const Global_navigation_component = () => {
                                 <Link to="/login" className="text-white hover:text-red-500 transition-all duration-300">
                                     Sign In
                                 </Link>
-                                <Link to="/signup" className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-all duration-300">
+                                <Link to="/signup" className="text-white hover:text-red-500 transition-all duration-300">
                                     Sign Up
                                 </Link>
                             </>

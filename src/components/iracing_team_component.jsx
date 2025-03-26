@@ -10,7 +10,7 @@ const Iracing_team_component = () => {
     ];
 
     return (
-        <section className="py-16 bg-black text-center" id="team">
+        <section className="py-16 bg-gray-900 text-center" id="team">
             <h2 className="text-4xl text-white mb-8">Meet Our Team</h2>
             <div className="flex flex-wrap justify-center mt-8">
                 {teamMembers.map((member, index) => (

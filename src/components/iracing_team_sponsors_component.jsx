@@ -3,26 +3,25 @@ import React, { useState } from 'react';
 const sponsors = [
     {
         name: 'nixianearts',
-        logo: 'https://scrapyard.gg/nixianearts.png',
+        logo: 'https://scrapyard.gg/nixianearts.webp',
         website: 'https://www.instagram.com/nixianearts/',
     },
     {
         name: 'kiddsiscotv',
-        logo: 'https://scrapyard.gg/twitch.channel.png',
+        logo: 'https://scrapyard.gg/twitch.channel.webp',
         website: 'https://m.twitch.tv/kiddsiscotv/home',
     },
     {
         name: 'Maple Designs',
-        logo: 'https://scrapyard.gg/maple.png',
+        logo: 'https://scrapyard.gg/maple.webp',
         website: 'https://www.instagram.com/maplesgfxshed?igsh=OWN3Z2NyajJqMDd0',
     },
 ];
 
-const scrapyardLogo = 'https://scrapyard.gg/sy_logo.png';
+const scrapyardLogo = 'https://scrapyard.gg/sy_logo.webp';
 
 const styles = {
     sponsorsSection: {
-        backgroundColor: '#000',
         color: '#fff',
         padding: '50px 20px',
         textAlign: 'center',

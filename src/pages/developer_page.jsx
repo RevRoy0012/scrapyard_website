@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const Developer_page = () => {
     return (
         <div className="bg-black text-white">

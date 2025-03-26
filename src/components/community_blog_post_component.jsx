@@ -12,7 +12,7 @@ const Community_blog_post_component = () => {
         const fetchBlogPosts = async () => {
             try {
                 const response = await fetch('https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/blog');
-                if (!response.ok) throw new Error('Failed to fetch blog posts');
+                if (!response.ok) throw new Error('Failed to fetch announcement posts');
                 const data = await response.json();
 
                 if (data.posts && Array.isArray(data.posts)) {
@@ -38,7 +38,7 @@ const Community_blog_post_component = () => {
     const PostCard = ({ post }) => (
         <div
             key={post.id}
-            className="bg-white bg-opacity-80 p-6 rounded-lg shadow-lg transform transition duration-300 ease-in-out"
+            className="bg-gray-700 bg-opacity-80 p-6 rounded-lg shadow-lg transform transition duration-300 ease-in-out"
             style={{
                 width: "100%",
                 overflowWrap: "break-word",
@@ -51,12 +51,12 @@ const Community_blog_post_component = () => {
                     alt={post.discord_username || "Anonymous"}
                     className="w-12 h-12 rounded-full mr-3"
                 />
-                <span className="text-lg font-semibold text-red-500">{post.discord_username || "Anonymous"}</span>
+                <span className="text-lg font-semibold text-gray-100">{post.discord_username || "Anonymous"}</span>
             </div>
 
             {/* Post content */}
             <div
-                className="mb-4 text-gray-700 prose prose-red max-w-none"
+                className="mb-4 text-gray-100 prose prose-red max-w-none"
                 style={{
                     whiteSpace: "pre-wrap",
                 }}
@@ -66,7 +66,7 @@ const Community_blog_post_component = () => {
             </div>
 
             {/* Date posted */}
-            <div className="mt-4 text-sm text-gray-500">
+            <div className="mt-4 text-sm text-gray-100">
                 <span>Posted on: {post.date_posted ? formatDateTime(post.date_posted) : "Date not available"}</span>
             </div>
         </div>
@@ -103,11 +103,10 @@ const Community_blog_post_component = () => {
 
     return (
         <div
-            className="min-h-screen py-12 bg-cover bg-center"
-            style={{ backgroundImage: "url('/good.png')" }}
+            className="min-h-screen py-12 bg-gray-900 bg-center"
         >
             <div className="max-w-7xl mx-auto">
-                <h1 className="text-4xl font-extrabold text-center text-red-500 mb-10">Blog Posts</h1>
+                <h1 className="text-4xl font-extrabold text-center text-red-500 mb-10">Announcements</h1>
 
                 {/* Show skeletons while loading */}
                 {loading ? (
@@ -128,7 +127,12 @@ const Community_blog_post_component = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center text-gray-500">No blog posts available.</div>
+                    <div className="bg-gray-800 bg-opacity-60 text-white p-6 rounded-lg shadow-lg flex justify-center items-center h-56">
+                        <div className="text-center">
+                            <p className="text-2xl font-semibold text-red-500">No announcements have been made.</p>
+                            <p className="text-lg text-gray-200 mt-2">Check back later!</p>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>

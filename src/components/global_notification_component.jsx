@@ -1,5 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 
+// eslint-disable-next-line react/prop-types
 const Global_notification_component = ({ message, type, duration = 3000 }) => {
     const [visible, setVisible] = useState(!!message);
 

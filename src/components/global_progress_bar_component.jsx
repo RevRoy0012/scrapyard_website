@@ -8,6 +8,7 @@ const Global_progress_bar_component = () => {
 
     useEffect(() => {
         let timer;
+        let completionTimer;
 
         const startProgress = () => {
             setShow(true);
@@ -26,16 +27,37 @@ const Global_progress_bar_component = () => {
         const completeProgress = () => {
             clearInterval(timer);
             setProgress(100);
-            setTimeout(() => setShow(false), 300);
+            completionTimer = setTimeout(() => setShow(false), 300);
         };
 
+        // Start progress on location change
         startProgress();
+
+        // Complete progress when page finishes loading
+        window.addEventListener('load', completeProgress);
+
+        // Fallback completion in case load event doesn't fire
+        const safetyTimer = setTimeout(completeProgress, 3000);
 
         return () => {
             clearInterval(timer);
-            completeProgress();
+            clearTimeout(completionTimer);
+            clearTimeout(safetyTimer);
+            window.removeEventListener('load', completeProgress);
         };
     }, [location]);
+
+    // Auto-complete if we reach 95% without navigation
+    useEffect(() => {
+        if (progress >= 95) {
+            const timeout = setTimeout(() => {
+                setProgress(100);
+                setTimeout(() => setShow(false), 300);
+            }, 500);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [progress]);
 
     if (!show) return null;
 

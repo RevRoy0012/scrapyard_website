@@ -10,26 +10,35 @@ const Link_tree_page = () => {
                         <img
                             src="/sy_logo.png"
                             alt="ScrapYard Logo"
-                            className="w-32 h-32 mx-auto mb-4 animate-pulse"
+                            className="w-32 h-32 mx-auto mb-4 animate-"
                         />
-                        <h1 className="text-4xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+                        <h1 className="text-4xl font-bold text-red-500">
                             ScrapYard Links
                         </h1>
                     </div>
 
                     <div className="space-y-6">
-                        {/* Social Links First */}
+                        {/* Main Social Links */}
                         <div className="space-y-4">
                             <h2 className="text-white/80 text-lg font-semibold">Social Connections</h2>
-                            <SocialLink href="https://discord.com/invite/scrapyardgg" icon="fab fa-discord" label="Discord" />
-                            <SocialLink href="https://www.youtube.com/@scrapyardgg" icon="fab fa-youtube" label="YouTube" />
-                            <SocialLink href="https://www.instagram.com/scrapyardgg/" icon="fab fa-instagram" label="Instagram" />
-                            <SocialLink href="https://x.com/gg_scrapyard" icon="fab fa-twitter" label="Twitter/X" />
-                            <SocialLink href="https://www.tiktok.com/@scrapyard.gg" icon="fab fa-tiktok" label="TikTok" />
-                            <SocialLink href="https://www.twitch.tv/scrapyard_gg" icon="fab fa-twitch" label="Twitch" />
+                            <SocialLink href="https://www.patreon.com/c/ScrapYard_GG" icon="fab fa-patreon" label="Official Patreon (Support Us ❤️)" />
+                            <SocialLink href="https://discord.com/invite/scrapyardgg" icon="fab fa-discord" label="Official Discord" />
+                            <SocialLink href="https://www.youtube.com/@scrapyardgg" icon="fab fa-youtube" label="Official YouTube" />
+                            <SocialLink href="https://www.instagram.com/scrapyardgg/" icon="fab fa-instagram" label="Official Instagram" />
+                            <SocialLink href="https://x.com/gg_scrapyard" icon="fab fa-twitter" label="Official Twitter/X" />
+                            <SocialLink href="https://bsky.app/profile/scrapyard.gg" icon="fab fa-bluesky" label="Official Blue Sky"  />
+                            <SocialLink href="https://www.tiktok.com/@scrapyard.gg" icon="fab fa-tiktok" label="Official TikTok" />
+                            <SocialLink href="https://www.twitch.tv/scrapyard_gg" icon="fab fa-twitch" label="Official Twitch" />
+
                         </div>
 
-                        {/* Site Navigation Second */}
+                        {/* Community Links */}
+                        <div className="space-y-6">
+                            <h2 className="text-white/80 text-lg font-semibold">Community Social Connections</h2>
+                            <SocialLink href="https://www.instagram.com/sy_ir_team/" icon="fab fa-instagram" label="iRacing Team's Instagram" />
+                        </div>
+
+                        {/* Site Navigation */}
                         <div className="space-y-4">
                             <h2 className="text-white/80 text-lg font-semibold">Website Navigation</h2>
                             <LinkItem to="/" text="Home" />
