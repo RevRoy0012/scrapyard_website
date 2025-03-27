@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 const TARGET_SIZE = 60; // Increased for improved visibility
-const GAME_TIME = 10; // Total game time in seconds
+const GAME_TIME = 13; // Total game time in seconds
 const WIN_SCORE = 15; // Number of clicks required to win
 const NAV_BAR_HEIGHT = 60; // Height of the navbar (adjust as needed)
 
