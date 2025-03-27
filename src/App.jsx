@@ -26,7 +26,7 @@ import User_profile_page from './pages/user_profile_page.jsx';
 import Discord_success_page from "./pages/discord_success_page.jsx";
 import Bug_report_page from "./pages/bug_report_page.jsx";
 
-// EasterEggListener
+// mall trigger
 import X47TriggerJsx from './X47Trigger.jsx.jsx';
 
 function App() {
@@ -84,6 +84,8 @@ function App() {
                         {/* Link Tree Page */}
                         <Route path="/links" element={<Link_tree_page />} />
 
+                        <X47TriggerJsx />
+
                         {/* Authentication Pages */}
                         <Route
                             path="/login"
@@ -128,8 +130,6 @@ function App() {
                         <Route path="/bug-report" element={<Bug_report_page />} />
                         <Route path="*" element={<div className="text-white p-20 text-center">404 - Page Not Found</div>} />
                     </Routes>
-
-                    <X47TriggerJsx />
                 </Global_page_transition_wrapper_component>
             </Suspense>
         </Router>

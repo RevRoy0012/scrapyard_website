@@ -36,7 +36,6 @@ const X47Trigger = () => {
         return () => window.removeEventListener('keydown', keyHandler);
     }, []);
 
-    // Mobile trigger: Detect 5 rapid taps in an invisible area.
     useEffect(() => {
         const tapHandler = () => {
             tapCount.current += 1;
