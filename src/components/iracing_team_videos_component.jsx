@@ -14,7 +14,7 @@ const Iracing_team_videos_component = () => {
     return (
         <div className="py-12 bg-grey-900 bg-opacity-70 text-white">
             <div className="max-w-7xl mx-auto text-center">
-                <h2 className="text-3xl font-bold text-red-500 mb-8">Gameplay Videos</h2>
+                <h2 className="text-red-500 text-5xl font-bold mb-10">Gameplay Videos</h2>
                 <p className="text-lg text-gray-300 mb-10">Check out some of our exciting gameplay moments!</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">
                     {[

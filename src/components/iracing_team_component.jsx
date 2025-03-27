@@ -11,12 +11,12 @@ const Iracing_team_component = () => {
 
     return (
         <section className="py-16 bg-gray-900 text-center" id="team">
-            <h2 className="text-4xl text-white mb-8">Meet Our Team</h2>
+            <h2 className="text-red-500 text-5xl font-bold mb-10">Meet Our Team</h2>
             <div className="flex flex-wrap justify-center mt-8">
                 {teamMembers.map((member, index) => (
                     <div
                         key={index}
-                        className="max-w-xs mx-4 my-6 transform transition-transform duration-300 hover:scale-105"
+                        className="bg-gray-800  mx-4 my-6 transform transition-transform duration-300 hover:scale-105"
                     >
                         <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                             <img

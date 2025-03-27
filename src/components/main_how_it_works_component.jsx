@@ -29,7 +29,7 @@ const How_it_works_component = () => {
     return (
         <section className="relative py-20 px-8 text-center bg-black">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-5xl font-bold text-white mb-10">
+                <h2 className="text-5xl font-bold text-red-500 mb-10">
                     How ScrapYard Works
                 </h2>
 

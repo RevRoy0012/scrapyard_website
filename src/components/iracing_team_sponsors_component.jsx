@@ -26,11 +26,6 @@ const styles = {
         padding: '50px 20px',
         textAlign: 'center',
     },
-    sponsorsTitle: {
-        color: '#e10600',
-        fontSize: '2.5em',
-        marginBottom: '40px',
-    },
     sponsorsContainer: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -128,7 +123,7 @@ const Iracing_team_sponsors_component = () => {
 
     return (
         <section style={styles.sponsorsSection}>
-            <h2 style={styles.sponsorsTitle}>Powered By</h2>
+            <h2 class="text-red-500 text-5xl font-bold mb-10">Powered By</h2>
             <div style={styles.sponsorsContainer}>
                 {sponsors.map((sponsor, index) => (
                     <div

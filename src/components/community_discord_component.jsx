@@ -3,7 +3,7 @@ import React from 'react';
 const Community_discord_component = () => {
     return (
         <section className="py-12 text-center bg-gray-900">
-            <h2 className="text-4xl font-bold text-blue-400 mb-8">💬 Join the Discussion</h2>
+            <h2 className="text-4xl font-bold text-red-500 mb-8">💬 Join the Discussion</h2>
 
             <div className="max-w-4xl mx-auto bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
                 <iframe

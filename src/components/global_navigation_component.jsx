@@ -67,7 +67,7 @@ const Global_navigation_component = () => {
                 <div className="flex items-center justify-between h-16">
 
                     {/* Logo and Brand Name */}
-                    <Link to="/" className="flex items-center text-white font-bold text-xl space-x-2">
+                    <Link to="/" className="flex items-center text-red-500 font-bold text-xl space-x-2">
                         <img src="/sy_logo.png" alt="ScrapYard Logo" className="h-8 w-8" />
                         <span>ScrapYard</span>
                     </Link>

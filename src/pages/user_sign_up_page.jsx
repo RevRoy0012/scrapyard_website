@@ -36,24 +36,34 @@ const User_sign_up_page = () => {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        // Validate input:
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+
         if (!email || !emailRegex.test(email)) {
             setNotification({ message: 'Please enter a valid email address.', type: 'error' });
             return;
         }
+
         if (!username || !usernameRegex.test(username)) {
-            setNotification({ message: 'Username must be alphanumeric, 3-20 characters long.', type: 'error' });
+            setNotification({
+                message: 'Username must be alphanumeric and 3–20 characters long.',
+                type: 'error',
+            });
             return;
         }
+
         if (!passwordValidation.length || !passwordValidation.hasNumber || !passwordValidation.hasSpecialChar) {
-            setNotification({ message: 'Password must be at least 8 characters and include a number and a special character.', type: 'error' });
+            setNotification({
+                message: 'Password must be at least 8 characters, include a number and special character.',
+                type: 'error',
+            });
             return;
         }
 
         setIsLoading(true);
-        setNotification({ message: 'Signing up...', type: 'info' });
+        setNotification({ message: '', type: '' });
+
         try {
             const response = await fetch(
                 'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/web/auth/sign-up',
@@ -63,7 +73,9 @@ const User_sign_up_page = () => {
                     body: JSON.stringify({ username, email, password }),
                 }
             );
+
             const result = await response.json();
+
             if (response.ok) {
                 setIsVerifying(true);
                 setNotification({ message: 'Verification code sent. Check your email.', type: 'success' });
@@ -81,7 +93,8 @@ const User_sign_up_page = () => {
     const handleVerify = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        setNotification({ message: 'Verifying...', type: 'info' });
+        setNotification({ message: '', type: '' });
+
         try {
             const response = await fetch(
                 'https://2ta5nfjxzb.execute-api.us-east-2.amazonaws.com/prod/mobile/auth/verify-email',
@@ -92,12 +105,11 @@ const User_sign_up_page = () => {
                 }
             );
             const result = await response.json();
+
             if (response.ok) {
                 storeUser(result);
                 setNotification({ message: 'Sign up successful!', type: 'success' });
-                setTimeout(() => {
-                    navigate('/link-discord');
-                }, 1000);
+                setTimeout(() => navigate('/link-discord'), 1000);
             } else {
                 setNotification({ message: result.message || 'Verification failed.', type: 'error' });
             }
@@ -110,16 +122,21 @@ const User_sign_up_page = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-4">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 p-4 relative">
             {isLoading && <Global_throbber_component />}
+            <Global_notification_component
+                message={notification.message}
+                type={notification.type}
+                duration={4000}
+            />
             <div className="w-full max-w-md p-8 bg-gray-800 rounded shadow relative">
                 <button onClick={() => navigate('/')} className="mb-4 text-white underline absolute top-4 left-4">
                     &larr; Back
                 </button>
                 <h2 className="text-2xl text-white mb-6 text-center">Sign Up</h2>
+
                 {!isVerifying ? (
                     <form onSubmit={handleSignUp}>
-                        {/* Username field */}
                         <input
                             type="text"
                             placeholder="Username"
@@ -128,7 +145,7 @@ const User_sign_up_page = () => {
                             onChange={(e) => setUsername(e.target.value)}
                             required
                         />
-                        {/* Email field */}
+
                         <input
                             type="email"
                             placeholder="Email"
@@ -137,7 +154,7 @@ const User_sign_up_page = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
-                        {/* Password field */}
+
                         <div className="relative mb-2">
                             <input
                                 type={showPassword ? 'text' : 'password'}
@@ -157,19 +174,21 @@ const User_sign_up_page = () => {
                                 {showPassword ? 'Hide' : 'Show'}
                             </button>
                         </div>
+
                         {isPasswordFocused && (
                             <div className="mb-4 text-sm text-gray-300">
-                                <div style={{ transition: 'text-decoration 0.3s', textDecoration: passwordValidation.length ? 'line-through' : 'none' }}>
+                                <div style={{ textDecoration: passwordValidation.length ? 'line-through' : 'none' }}>
                                     At least 8 characters
                                 </div>
-                                <div style={{ transition: 'text-decoration 0.3s', textDecoration: passwordValidation.hasNumber ? 'line-through' : 'none' }}>
+                                <div style={{ textDecoration: passwordValidation.hasNumber ? 'line-through' : 'none' }}>
                                     Includes a number
                                 </div>
-                                <div style={{ transition: 'text-decoration 0.3s', textDecoration: passwordValidation.hasSpecialChar ? 'line-through' : 'none' }}>
+                                <div style={{ textDecoration: passwordValidation.hasSpecialChar ? 'line-through' : 'none' }}>
                                     Includes a special character
                                 </div>
                             </div>
                         )}
+
                         <button type="submit" className="w-full bg-red-500 p-3 rounded text-white">
                             {isLoading ? 'Signing Up...' : 'Sign Up'}
                         </button>
@@ -190,7 +209,7 @@ const User_sign_up_page = () => {
                         </button>
                     </form>
                 )}
-                <Global_notification_component message={notification.message} type={notification.type} />
+
                 <p className="mt-4 text-center text-gray-400">
                     Already have an account?{' '}
                     <Link to="/login" className="text-red-500">

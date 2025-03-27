@@ -106,7 +106,7 @@ const Community_blog_post_component = () => {
             className="min-h-screen py-12 bg-gray-900 bg-center"
         >
             <div className="max-w-7xl mx-auto">
-                <h1 className="text-4xl font-extrabold text-center text-red-500 mb-10">Announcements</h1>
+                <h1 className="text-red-500 text-5xl font-bold mb-10 text-center">Announcements</h1>
 
                 {/* Show skeletons while loading */}
                 {loading ? (

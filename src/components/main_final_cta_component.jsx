@@ -6,7 +6,7 @@ const Main_final_cta_component = () => {
         <section className="relative py-24 px-8 text-center bg-gradient-to-b from-black to-gray-900">
             <div className="max-w-4xl mx-auto">
                 <motion.h2
-                    className="text-5xl font-bold text-white mb-6"
+                    className="text-5xl font-bold text-red-500 mb-6"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}

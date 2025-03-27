@@ -30,7 +30,7 @@ const Main_live_stats_component = () => {
     return (
         <section className="relative py-16 px-8 text-center bg-black">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-5xl font-bold text-white mb-10">Live ScrapYard Stats</h2>
+                <h2 className="text-5xl font-bold text-red-500 mb-10">Live ScrapYard Stats</h2>
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">

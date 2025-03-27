@@ -76,7 +76,7 @@ ${additionalNotes.trim()}
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6">
             {isLoading && <Global_throbber_component />}
             <div className="w-full max-w-2xl bg-gray-800 p-8 rounded shadow">
-                <h2 className="text-3xl font-bold mb-6 text-center">Submit a Bug Report</h2>
+                <h2 className="text-red-500 text-3xl font-bold mb-6 text-center">Submit a Bug Report</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block font-semibold mb-1">Brief Description *</label>

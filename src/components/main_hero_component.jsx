@@ -62,12 +62,11 @@ const Main_hero_component = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            <Link
-                                to="/development"
+                            <button
                                 className="block bg-transparent border-2 border-white/20 hover:border-white/40 text-white px-8 py-4 rounded-full text-lg font-medium transition-all"
                             >
-                                Explore Features
-                            </Link>
+                                Explore Features (Coming Soon)
+                            </button>
                         </motion.div>
                     </motion.div>
 

@@ -1,16 +1,25 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 
-// eslint-disable-next-line react/prop-types
-const Global_notification_component = ({ message, type, duration = 3000 }) => {
+const Global_notification_component = ({ message, type = 'info', duration = 3000 }) => {
     const [visible, setVisible] = useState(!!message);
+    const [offsetTop, setOffsetTop] = useState('60px'); // Default fallback
+
+    useEffect(() => {
+        // Adjust offsetTop for small screens
+        const updateOffset = () => {
+            const isMobile = window.innerWidth <= 768;
+            setOffsetTop(isMobile ? '80px' : '40px');
+        };
+
+        updateOffset();
+        window.addEventListener('resize', updateOffset);
+        return () => window.removeEventListener('resize', updateOffset);
+    }, []);
 
     useEffect(() => {
         if (message) {
             setVisible(true);
-            const timer = setTimeout(() => {
-                setVisible(false);
-            }, duration);
+            const timer = setTimeout(() => setVisible(false), duration);
             return () => clearTimeout(timer);
         } else {
             setVisible(false);
@@ -19,28 +28,41 @@ const Global_notification_component = ({ message, type, duration = 3000 }) => {
 
     if (!visible || !message) return null;
 
-    let bgColor = '#6c757d';
-    if (type === 'success') bgColor = '#28a745';
-    else if (type === 'error') bgColor = '#dc3545';
-    else if (type === 'info') bgColor = '#17a2b8';
+    const typeStyles = {
+        success: { background: '#28a745', icon: '✅' },
+        error: { background: '#FF3B30', icon: '⚠️' },
+        info: { background: '#17a2b8', icon: 'ℹ️' },
+    };
+
+    const { background, icon } = typeStyles[type] || typeStyles.info;
 
     return (
         <div
             style={{
                 position: 'fixed',
-                top: '20px',
+                top: `calc(env(safe-area-inset-top, 0px) + ${offsetTop})`,
                 left: '50%',
                 transform: 'translateX(-50%)',
-                backgroundColor: bgColor,
+                backgroundColor: background,
                 color: '#fff',
-                padding: '12px 20px',
-                borderRadius: '5px',
+                padding: '12px 18px',
+                borderRadius: '8px',
                 zIndex: 1000,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
                 fontSize: '16px',
+                fontWeight: 500,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                opacity: visible ? 1 : 0,
+                transition: 'opacity 0.3s ease-in-out',
+                maxWidth: '90vw',
+                wordWrap: 'break-word',
+                textAlign: 'center',
             }}
         >
-            {message}
+            <span>{icon}</span>
+            <span>{message}</span>
         </div>
     );
 };

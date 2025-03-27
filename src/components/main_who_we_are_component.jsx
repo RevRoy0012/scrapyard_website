@@ -46,7 +46,7 @@ const Main_who_we_are_component = () => {
             <div className="relative z-10">
                 {/* Animate Title when in view */}
                 <motion.h2
-                    className="text-5xl font-bold text-white mb-6"
+                    className="text-5xl font-bold text-red-500 mb-6"
                     initial={{ opacity: 0, y: 50 }}
                     animate={inView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.6, ease: "easeOut" }}
