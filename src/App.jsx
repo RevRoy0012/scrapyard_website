@@ -26,6 +26,9 @@ import User_profile_page from './pages/user_profile_page.jsx';
 import Discord_success_page from "./pages/discord_success_page.jsx";
 import Bug_report_page from "./pages/bug_report_page.jsx";
 
+// EasterEggListener
+import EasterEggListener from './EasterEggListener.jsx';
+
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
@@ -125,6 +128,8 @@ function App() {
                         <Route path="/bug-report" element={<Bug_report_page />} />
                         <Route path="*" element={<div className="text-white p-20 text-center">404 - Page Not Found</div>} />
                     </Routes>
+
+                    <EasterEggListener />
                 </Global_page_transition_wrapper_component>
             </Suspense>
         </Router>
