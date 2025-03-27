@@ -1,84 +1,74 @@
-// src/EasterEggGame.jsx
 import React, { useState, useEffect } from 'react';
 
-const TARGET_SIZE = 60; // Increased for improved visibility
-const GAME_TIME = 13; // Total game time in seconds
-const WIN_SCORE = 15; // Number of clicks required to win
-const NAV_BAR_HEIGHT = 60; // Height of the navbar (adjust as needed)
+const TARGET_SIZE = 60;
+const GAME_TIME = 16;
+const WIN_SCORE = 15;
+const NAV_OFFSET_VH = 10;
+const LS_KEY = "x47_flag";
 
-// Computes a random position for the target, ensuring it never appears behind the navbar.
+// Compute a random position using viewport units so it scales with zoom.
 const getRandomPosition = () => {
-    const x = Math.floor(Math.random() * (window.innerWidth - TARGET_SIZE));
-    const y =
-        Math.floor(Math.random() * ((window.innerHeight - TARGET_SIZE) - NAV_BAR_HEIGHT)) +
-        NAV_BAR_HEIGHT;
-    return { x, y };
+    const left = Math.random() * 80; // between 0 and 80vw
+    const top = NAV_OFFSET_VH + Math.random() * (90 - NAV_OFFSET_VH); // between 10vh and 90vh
+    return { left: `${left}vw`, top: `${top}vh` };
 };
 
-const EasterEggGame = ({ onClose }) => {
+const X47Challenge = ({ onClose }) => {
     const [score, setScore] = useState(0);
-    const [targetPosition, setTargetPosition] = useState(getRandomPosition());
+    const [position, setPosition] = useState(getRandomPosition());
     const [timeLeft, setTimeLeft] = useState(GAME_TIME);
     const [gameOver, setGameOver] = useState(false);
     const [win, setWin] = useState(false);
-    const [gameOverReason, setGameOverReason] = useState(null); // "misclick" or "timeout"
+    const [reason, setReason] = useState(null); // 'misclick' or 'timeout'
 
-    // Countdown timer effect: when time runs out, mark game over due to timeout.
+    // Countdown timer effect – when time runs out, end game with "timeout"
     useEffect(() => {
         if (timeLeft <= 0 && !gameOver) {
-            setGameOverReason("timeout");
+            setReason("timeout");
             setGameOver(true);
             return;
         }
         if (gameOver) return;
-        const timer = setTimeout(() => {
-            setTimeLeft(timeLeft - 1);
-        }, 1000);
+        const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
         return () => clearTimeout(timer);
     }, [timeLeft, gameOver]);
 
-    // Persist a flag so the game cannot be retried.
+    // Once the challenge is over, persist the flag to prevent reattempts.
     useEffect(() => {
         if (gameOver) {
-            localStorage.setItem("easterEggGameAttempted", "true");
+            localStorage.setItem(LS_KEY, "true");
         }
     }, [gameOver]);
 
-    // Handle a correct click on the target.
+    // Handle a valid target hit.
     const handleTargetClick = (e) => {
-        e.stopPropagation(); // Prevent misclick detection.
+        e.stopPropagation();
         const newScore = score + 1;
         setScore(newScore);
         if (newScore >= WIN_SCORE) {
             setWin(true);
             setGameOver(true);
         } else {
-            setTargetPosition(getRandomPosition());
+            setPosition(getRandomPosition());
         }
     };
 
-    // Handle misclicks (clicks outside the target).
+    // A misclick (any click outside the target) immediately ends the challenge.
     const handleMisclick = () => {
         if (!gameOver) {
-            setGameOverReason("misclick");
+            setReason("misclick");
             setGameOver(true);
         }
     };
 
-    // Close the game modal.
-    const handleClose = () => {
-        onClose();
-    };
+    const handleClose = () => onClose();
 
     return (
         <div
             onClick={handleMisclick}
             style={{
                 position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
+                top: 0, left: 0, right: 0, bottom: 0,
                 background: 'linear-gradient(135deg, #0A0A0A, #121212)',
                 display: 'flex',
                 flexDirection: 'column',
@@ -102,7 +92,7 @@ const EasterEggGame = ({ onClose }) => {
                             marginBottom: '20px',
                         }}
                     >
-                        ScrapYard Challenge
+                        X47 Challenge
                     </h1>
                     <p
                         style={{
@@ -114,8 +104,8 @@ const EasterEggGame = ({ onClose }) => {
                             maxWidth: '600px',
                         }}
                     >
-                        Hit the hexagonal target <strong>five times</strong> without missing.
-                        One misclick and the challenge is over!
+                        Hit the hexagonal target <strong>five times</strong> without a misclick.
+                        One error and the challenge is over!
                     </p>
                     <div
                         style={{
@@ -144,15 +134,14 @@ const EasterEggGame = ({ onClose }) => {
                         onClick={handleTargetClick}
                         style={{
                             position: 'absolute',
-                            top: targetPosition.y,
-                            left: targetPosition.x,
+                            left: position.left,
+                            top: position.top,
                             width: TARGET_SIZE,
                             height: TARGET_SIZE,
                             backgroundColor: '#FF3B30',
-                            clipPath:
-                                'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)',
+                            clipPath: 'polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%)',
                             cursor: 'pointer',
-                            transition: 'top 0.3s, left 0.3s',
+                            transition: 'left 0.3s, top 0.3s',
                             boxShadow: '0 0 15px 3px #FF9500',
                         }}
                     />
@@ -182,8 +171,7 @@ const EasterEggGame = ({ onClose }) => {
                                     marginBottom: '30px',
                                 }}
                             >
-                                Take a screenshot of this screen and send it via Discord to claim
-                                your rewards!
+                                Take a screenshot and send it via Discord to claim your rewards!
                             </p>
                         </>
                     ) : (
@@ -201,7 +189,7 @@ const EasterEggGame = ({ onClose }) => {
                             >
                                 Game Over
                             </h1>
-                            {gameOverReason === 'misclick' ? (
+                            {reason === 'misclick' ? (
                                 <p
                                     style={{
                                         fontFamily: 'Roboto, sans-serif',
@@ -210,7 +198,7 @@ const EasterEggGame = ({ onClose }) => {
                                         marginBottom: '30px',
                                     }}
                                 >
-                                    You misclicked! You can no longer attempt the game.
+                                    You misclicked! The challenge is over.
                                 </p>
                             ) : (
                                 <p
@@ -221,7 +209,7 @@ const EasterEggGame = ({ onClose }) => {
                                         marginBottom: '30px',
                                     }}
                                 >
-                                    Time's up! You can no longer attempt the game.
+                                    Time's up! The challenge is over.
                                 </p>
                             )}
                         </>
@@ -249,4 +237,4 @@ const EasterEggGame = ({ onClose }) => {
     );
 };
 
-export default EasterEggGame;
+export default X47Challenge;

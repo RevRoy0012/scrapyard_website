@@ -27,7 +27,7 @@ import Discord_success_page from "./pages/discord_success_page.jsx";
 import Bug_report_page from "./pages/bug_report_page.jsx";
 
 // EasterEggListener
-import EasterEggListener from './EasterEggListener.jsx';
+import X47TriggerJsx from './X47Trigger.jsx.jsx';
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -129,7 +129,7 @@ function App() {
                         <Route path="*" element={<div className="text-white p-20 text-center">404 - Page Not Found</div>} />
                     </Routes>
 
-                    <EasterEggListener />
+                    <X47TriggerJsx />
                 </Global_page_transition_wrapper_component>
             </Suspense>
         </Router>
