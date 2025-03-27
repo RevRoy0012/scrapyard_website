@@ -84,8 +84,6 @@ function App() {
                         {/* Link Tree Page */}
                         <Route path="/links" element={<Link_tree_page />} />
 
-                        <X47TriggerJsx />
-
                         {/* Authentication Pages */}
                         <Route
                             path="/login"
@@ -130,6 +128,7 @@ function App() {
                         <Route path="/bug-report" element={<Bug_report_page />} />
                         <Route path="*" element={<div className="text-white p-20 text-center">404 - Page Not Found</div>} />
                     </Routes>
+                    <X47TriggerJsx />
                 </Global_page_transition_wrapper_component>
             </Suspense>
         </Router>
