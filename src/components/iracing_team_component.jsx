@@ -3,10 +3,12 @@ import React from 'react';
 const Iracing_team_component = () => {
     const teamMembers = [
         { name: 'Jordan', role: 'Team Lead', image: '/weewoo_pfp.webp' },
-        { name: 'Aaron', role: 'Driver', image: '/ben_pfp.webp' },
+        { name: 'Alex', role: 'Livery Artist', image: '/alex.webp' },
+        { name: 'Jrodt', role: 'Driver', image: '/jrodt.webp' },
         { name: 'Nathan', role: 'Driver', image: '/jae_pfp.webp' },
         { name: 'Malvyn', role: 'Driver', image: '/mel_pfp.webp' },
         { name: 'Michael', role: 'Jr. Driver', image: '/subie_pfp.webp' },
+        { name: 'Aaron', role: 'Associate', image: '/ben_pfp.webp' }
     ];
 
     return (
