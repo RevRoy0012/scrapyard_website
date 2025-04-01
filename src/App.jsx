@@ -25,6 +25,7 @@ import Discord_callback_page from './pages/discord_callback_page.jsx';
 import User_profile_page from './pages/user_profile_page.jsx';
 import Discord_success_page from "./pages/discord_success_page.jsx";
 import Bug_report_page from "./pages/bug_report_page.jsx";
+import Iracing_livery_hub from "./pages/iracing_livery_hub.jsx";
 
 // mall trigger
 import X47TriggerJsx from './X47Trigger.jsx.jsx';
@@ -83,6 +84,9 @@ function App() {
 
                         {/* Link Tree Page */}
                         <Route path="/links" element={<Link_tree_page />} />
+
+                        {/* Iracing Livery Hub */}
+                        <Route path="/internal/livery_hub" element={<Iracing_livery_hub />} />
 
                         {/* Authentication Pages */}
                         <Route

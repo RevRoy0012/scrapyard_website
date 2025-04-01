@@ -207,6 +207,12 @@ const User_profile_page = ({ onLogout }) => {
                     </div>
                     <div>
                         <p className="text-lg">
+                            <span className="font-semibold">Roles:</span>{' '}
+                            {user.roles.replace(/[{}"]/g, '').replace(/,\s*$/, '')}
+                        </p>
+                    </div>
+                    <div>
+                        <p className="text-lg">
                             <span className="font-semibold">Email Verified:</span>{' '}
                             {user.verified_email ? 'Yes' : 'No'}
                         </p>
