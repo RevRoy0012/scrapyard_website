@@ -1,4 +1,4 @@
-// iRacing_livery_hub.jsx
+// Iracing_livery_hub.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import GlobalNotification from '../components/global_notification_component.jsx';
 import { FaUpload, FaDownload, FaEdit, FaTrashAlt, FaSort, FaSortUp, FaSortDown, FaTimes, FaSave, FaPlus } from 'react-icons/fa';
@@ -546,7 +546,7 @@ const ConfirmModal = ({ visible, message, onConfirm, onCancel }) => {
 
 
 // --- Main Component (Revamped) ---
-const IRacingLiveryHub = () => {
+const Iracing_livery_hub = () => {
     const [userRoles, setUserRoles] = useState([]);
     const [liveries, setLiveries] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -1181,4 +1181,4 @@ const IRacingLiveryHub = () => {
     );
 };
 
-export default IRacingLiveryHub;
+export default Iracing_livery_hub;
